@@ -115,6 +115,20 @@ void RosInterFace::ros_callback_elevator(const std_msgs::Float32::ConstPtr &_msg
   captain->send_package();
 };
 
+void RosInterFace::ros_callback_elevonPort(const std_msgs::Float32::ConstPtr &_msg) {
+  float angle = _msg->data;
+  captain->new_package(SC_SET_ELEVON_PORT);
+  captain->add_float(angle);
+  captain->send_package();
+};
+
+void RosInterFace::ros_callback_elevonStrb(const std_msgs::Float32::ConstPtr &_msg) {
+  float angle = _msg->data;
+  captain->new_package(SC_SET_ELEVON_STRB);
+  captain->add_float(angle);
+  captain->send_package();
+};
+
 void RosInterFace::ros_callback_thrusterPort(const smarc_msgs::ThrusterRPM::ConstPtr &_msg) {
   captain->new_package(SC_SET_THRUSTER_PORT);
   captain->add_float(_msg->rpm);

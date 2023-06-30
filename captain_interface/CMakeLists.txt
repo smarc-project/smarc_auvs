@@ -74,11 +74,9 @@ target_link_libraries(
 
 # Mark executable scripts (Python etc.) for installation
 install(PROGRAMS
-  scripts/actionclient.py
   scripts/lolo_translator.py
   scripts/menu_input.py
   scripts/menu_output.py
-  scripts/waypoint_actionserver.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

@@ -97,6 +97,8 @@ struct RosInterFace {
   //control surfaces
   ros::Subscriber rudder_sub;
   ros::Subscriber elevator_sub;
+  ros::Subscriber elevon_port_sub;
+  ros::Subscriber elevon_strb_sub;
 
   //"Service"
   ros::Subscriber service_sub;
@@ -184,6 +186,8 @@ struct RosInterFace {
   void ros_callback_rpm(const smarc_msgs::ThrusterRPM::ConstPtr &_msg);
   void ros_callback_rudder(const std_msgs::Float32::ConstPtr &_msg);
   void ros_callback_elevator(const std_msgs::Float32::ConstPtr &_msg);
+  void ros_callback_elevonPort(const std_msgs::Float32::ConstPtr &_msg);
+  void ros_callback_elevonStrb(const std_msgs::Float32::ConstPtr &_msg);
   void ros_callback_thrusterPort(const smarc_msgs::ThrusterRPM::ConstPtr &_msg);
   void ros_callback_thrusterStrb(const smarc_msgs::ThrusterRPM::ConstPtr &_msg);
   void ros_callback_service(const lolo_msgs::CaptainService::ConstPtr &_msg);

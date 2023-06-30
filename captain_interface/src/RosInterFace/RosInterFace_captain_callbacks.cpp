@@ -86,18 +86,18 @@ void RosInterFace::captain_callback_THRUSTER_PORT() {
 
   float rpm_setpoint    = captain->parse_float();
   float rpm             = captain->parse_float();
-  float current         = captain->parse_float();
-  float torque          = captain->parse_float();
-  float energy          = captain->parse_float();
-  float voltage         = captain->parse_float();
+  float input_current   = captain->parse_float();
+  float input_voltage   = captain->parse_float();
+  float motor_current   = captain->parse_float();
+  float esc_temp        = captain->parse_float();
 
   smarc_msgs::ThrusterFeedback thruster_msg;
   thruster_msg.header.stamp = ros::Time(sec,usec*1000);
   thruster_msg.header.seq = sequence;
   thruster_msg.header.frame_id = "lolo/thruster_port";
   thruster_msg.rpm.rpm = rpm;
-  thruster_msg.current = current;
-  thruster_msg.torque = torque;
+  thruster_msg.current = input_current;
+  thruster_msg.torque = motor_current;
   thrusterPort_pub.publish(thruster_msg);
 }
 
@@ -109,19 +109,19 @@ void RosInterFace::captain_callback_THRUSTER_STRB() {
 
   float rpm_setpoint    = captain->parse_float();
   float rpm             = captain->parse_float();
-  float current         = captain->parse_float();
-  float torque          = captain->parse_float();
-  float energy          = captain->parse_float();
-  float voltage         = captain->parse_float();
+  float input_current   = captain->parse_float();
+  float input_voltage   = captain->parse_float();
+  float motor_current   = captain->parse_float();
+  float esc_temp        = captain->parse_float();
   
   smarc_msgs::ThrusterFeedback thruster_msg;
   thruster_msg.header.stamp = ros::Time(sec,usec*1000);
   thruster_msg.header.seq = sequence;
   thruster_msg.header.frame_id = "lolo/thruster_stbd";
   thruster_msg.rpm.rpm = rpm;
-  thruster_msg.current = current;
-  thruster_msg.torque = torque;
-  thrusterStrb_pub.publish(thruster_msg);
+  thruster_msg.current = input_current;
+  thruster_msg.torque = motor_current;
+  thrusterPort_pub.publish(thruster_msg);
 }
 
 void RosInterFace::captain_callback_BATTERY() {

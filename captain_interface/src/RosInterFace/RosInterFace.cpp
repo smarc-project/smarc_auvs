@@ -38,6 +38,8 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   //control surfaces
   rudder_sub      = n->subscribe<std_msgs::Float32>("/lolo/core/rudder_cmd"   ,1, &RosInterFace::ros_callback_rudder, this);
   elevator_sub    = n->subscribe<std_msgs::Float32>("/lolo/core/elevator_cmd" ,1, &RosInterFace::ros_callback_elevator, this);
+  elevon_port_sub = n->subscribe<std_msgs::Float32>("/lolo/core/elevon_port_cmd" ,1, &RosInterFace::ros_callback_elevonPort, this);
+  elevon_strb_sub = n->subscribe<std_msgs::Float32>("/lolo/core/elevon_strb_cmd" ,1, &RosInterFace::ros_callback_elevonStrb, this);
 
   //"Service"
   service_sub     = n->subscribe<lolo_msgs::CaptainService>("/lolo/core/captain_srv_in" ,1, &RosInterFace::ros_callback_service, this);

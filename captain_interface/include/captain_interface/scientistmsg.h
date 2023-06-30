@@ -48,10 +48,14 @@
 #define SC_HEARTBEAT             150
 #define SC_ABORT                 151
 #define SC_DONE                  152
+
+#define SC_SET_ELEVON_PORT       159
+#define SC_SET_ELEVON_STRB       160
 #define SC_SET_RUDDER            161
 #define SC_SET_ELEVATOR          162
 #define SC_SET_THRUSTER_PORT     163
 #define SC_SET_THRUSTER_STRB     164
+
 #define SC_SET_TARGET_PITCH      165
 #define SC_SET_TARGET_YAW        166 
 #define SC_SET_TARGET_YAW_RATE   167
