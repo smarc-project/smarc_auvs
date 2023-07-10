@@ -4,7 +4,7 @@ import rospy
 from std_msgs.msg import Char
 import sys
 
-class asdf:
+class USBL:
     def __init__(self):
         self.message = ""
 
@@ -19,9 +19,9 @@ class asdf:
 
 def main():
 
-    aa = asdf();
+    aa = USBL();
 
-    rospy.init_node('menuListener', anonymous=True)
+    rospy.init_node('USBL_output', anonymous=True)
 
     rospy.Subscriber('/lolo/core/usbl_received', Char, aa.callback)
 

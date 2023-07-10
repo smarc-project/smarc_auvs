@@ -222,7 +222,7 @@ struct RosInterFace {
       case CS_LEAK: {         captain_callback_LEAK(); }; break; //Leak
       case CS_CONTROL: {      captain_callback_CONTROL(); } break; //control
       case CS_RUDDER: {       captain_callback_RUDDER(); } break; // rudder
-      //case CS_ELEVATOR: {     captain_callback_ELEVATOR(); } break; //elevator
+      case CS_ELEVATOR: {     captain_callback_ELEVATOR(); } break; //elevator
       case CS_ELEVON_PORT: {  captain_callback_ELEVON_PORT(); } break; //Port elevon
       case CS_ELEVON_STRB: {  captain_callback_ELEVON_STRB(); } break; //Strb elevon
       case CS_THRUSTER_PORT: {captain_callback_THRUSTER_PORT(); } break; //port thruster

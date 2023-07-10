@@ -1,0 +1,30 @@
+<launch>
+
+  <!-- A simple launch file for the nmea_serial_driver node. -->
+
+  <arg name="frame_id" default="gps" />
+  <arg name="use_GNSS_time" default="False" />
+  <arg name="time_ref_source" default="gps" />
+  <arg name="useRMC" default="False" />
+
+  <arg name="host" default="192.168.1.91" />
+  <arg name="port" default="9002" />
+
+
+  <node name="gps_tcp_reader_node" pkg="captain_interface" type="nmea_tcp_reader.py" output="screen" ns = "/lolo/core/gps_raw" >
+    <param name="host" value="$(arg host)" />
+    <param name="port" value="$(arg port)" />
+  </node>
+
+
+  <node name="nmea_topic_driver_node" pkg="nmea_navsat_driver" type="nmea_topic_driver" output="screen" ns = "/lolo/core/gps_raw" >
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="use_GNSS_time" value="$(arg use_GNSS_time)" />
+    <param name="time_ref_source" value="$(arg time_ref_source)" />
+    <param name="useRMC" value="$(arg useRMC)" />
+
+    <!-- Remap topics -->
+    <remap from="/lolo/core/gps_raw/fix" to="/lolo/core/gps"/>
+  </node>
+
+</launch>

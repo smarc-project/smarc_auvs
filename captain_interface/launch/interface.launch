@@ -8,10 +8,13 @@
         <param name="captain_ip" value="$(arg captain_ip)" type="str"/>
     </node>
 
-    <!-- setbool services node -->
-    <node pkg="captain_interface" type="captain_services.py" name="captain_toggle_services" output="screen"/>
+    <!-- setbool services node (Maybe add this again in the future) -->
+    <!-- <node pkg="captain_interface" type="captain_services.py" name="captain_toggle_services" output="screen"/> -->
 
-    <!-- Waypoint actionserver -->
-    <!-- <node pkg="captain_interface" type="waypoint_actionserver.py" name="waypoint_action_server" output="screen"/> -->
+    <!-- USBL output node -->
+    <node pkg="captain_interface" type="usbl_output.py" name="usbl_output" output="screen" />
 
+    <!-- TODO USBL input node -->
+    
+        
 </launch>

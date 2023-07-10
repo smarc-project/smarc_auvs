@@ -1,0 +1,27 @@
+<launch>
+
+  <!-- A simple launch file for the nmea_serial_driver node. -->
+
+  <arg name="frame_id" default="gps" />
+  <arg name="use_GNSS_time" default="False" />
+  <arg name="time_ref_source" default="gps" />
+  <arg name="useRMC" default="False" />
+
+  <arg name="UDP_IP" default="192.168.1.160" />
+  <arg name="UDP_PORT" default="9009" />
+
+
+  <node name="gps_tcp_reader_node" pkg="captain_interface" type="nmea_udp_reader.py" output="screen" ns = "/lolo/core/gps_raw" >
+    <param name="UDP_IP" value="$(arg UDP_IP)" />
+    <param name="UDP_PORT" value="$(arg UDP_PORT)" />
+  </node>
+
+
+  <node name="nmea_topic_driver_node" pkg="nmea_navsat_driver" type="nmea_topic_driver" output="screen" ns = "/lolo/core/gps_raw" >
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="use_GNSS_time" value="$(arg use_GNSS_time)" />
+    <param name="time_ref_source" value="$(arg time_ref_source)" />
+    <param name="useRMC" value="$(arg useRMC)" />
+  </node>
+
+</launch>

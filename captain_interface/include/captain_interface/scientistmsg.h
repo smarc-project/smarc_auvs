@@ -16,7 +16,7 @@
 #define CS_STATUS           8
 #define CS_CONTROL          9
 #define CS_RUDDER           10
-//#define CS_ELEVATOR         12
+#define CS_ELEVATOR         12
 #define CS_THRUSTER_PORT    13
 #define CS_THRUSTER_STRB    14
 #define CS_BATTERY          15

@@ -1,0 +1,28 @@
+<launch>
+
+<arg name="robot_name" default="lolo"/>
+<arg name="utm_zone" default="34"/>
+<arg name="utm_band" default="V"/>
+
+<param name="utm_zone" type="int" value="$(arg utm_zone)"/>
+<param name="utm_band" type="string" value="$(arg utm_band)"/> 
+
+<include file="$(find lolo_description)/launch/lolo_description.launch">
+    <arg name="namespace" value="$(arg robot_name)"/>
+</include>
+
+<node name="map2ned" pkg="tf" type="static_transform_publisher" args="0 0 0 1.571 0 3.1416 map world_ned 100"/>
+<node name="utm2map" pkg="tf" type="static_transform_publisher" args="535529 4864397 0 0 0 0 1 utm map 100" /> 
+
+<group ns="lolo">
+<group ns="dr">
+    <include file="$(find tf_lat_lon)/launch/tf_lat_lon.launch">
+        <arg name="frame" value="$(arg robot_name)/base_link"/>
+        <arg name="lat_lon_topic" value="lat_lon"/>
+    </include>
+</group>
+</group>
+
+<node name="ins_to_dr" type="ins_to_dr.py" pkg="lolo_drivers" output="screen"/>
+
+</launch>
