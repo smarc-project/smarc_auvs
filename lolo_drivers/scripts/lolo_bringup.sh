@@ -22,13 +22,13 @@ tmux rename-window "roscore"
 tmux send-keys "roscore" C-m
 
 tmux new-window -n 'Hardware1'
-tmux send-keys "sleep 3; roslaunch lolo_drivers lolo_core_hardware1.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP" C-m
+tmux send-keys "sleep 3; roslaunch lolo_drivers lolo_core_hardware1.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'Hardware2'
-tmux send-keys "sleep 3; roslaunch lolo_drivers lolo_core_hardware2.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP" C-m
+tmux send-keys "sleep 3; roslaunch lolo_drivers lolo_core_hardware2.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'tf'
-tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP" C-m
+tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'action'
 tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
