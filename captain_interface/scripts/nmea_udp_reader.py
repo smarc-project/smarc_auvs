@@ -9,7 +9,7 @@ def main():
     t = 0
 
 
-    UDP_IP = rospy.get_param("UDP_IP", "192.168.1.160")  # The computer ip
+    UDP_IP = rospy.get_param("UDP_IP", "192.168.1.100")  # The computer ip
     UDP_PORT = rospy.get_param("UDP_PORT", 9009)  # The port used by the server
     OUTPUT_TOPIC = rospy.get_param("topic", "nmea_sentence")
 

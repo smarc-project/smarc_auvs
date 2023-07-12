@@ -121,7 +121,7 @@ void RosInterFace::captain_callback_THRUSTER_STRB() {
   thruster_msg.rpm.rpm = rpm;
   thruster_msg.current = input_current;
   thruster_msg.torque = motor_current;
-  thrusterPort_pub.publish(thruster_msg);
+  thrusterStrb_pub.publish(thruster_msg);
 }
 
 void RosInterFace::captain_callback_BATTERY() {
