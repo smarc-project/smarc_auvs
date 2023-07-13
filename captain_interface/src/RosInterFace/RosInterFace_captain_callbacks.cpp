@@ -129,6 +129,7 @@ void RosInterFace::captain_callback_BATTERY() {
 }
 
 void RosInterFace::captain_callback_CTRL_STATUS() {
+  /*
   bool scientistinterface_enable_waypoint = captain->parse_byte();
   bool scientistinterface_enable_yaw      = captain->parse_byte();
   bool scientistinterface_enable_yawrate  = captain->parse_byte();
@@ -177,6 +178,7 @@ void RosInterFace::captain_callback_CTRL_STATUS() {
   msg_speed.control_status = scientistinterface_enable_speed;
   msg_speed.service_name = "/lolo/ctrl/toggle_onboard_speed_ctrl";
   ctrl_status_speed_pub.publish(msg_speed);
+  */
 };
 
 void RosInterFace::captain_callback_SERVICE() {

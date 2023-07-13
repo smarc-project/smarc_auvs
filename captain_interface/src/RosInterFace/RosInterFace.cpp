@@ -16,8 +16,9 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   ins_sub = n->subscribe<ixblue_ins_msgs::Ins>("/ixblue_ins_driver/ix/ins", 1, &RosInterFace::ros_callback_ins, this);
 
   //USBL
-  usbl_sub = n->subscribe<std_msgs::Char>("/lolo/core/usbl_transmit", 1, &RosInterFace::ros_callback_usbl_transmit, this);
+  usbl_sub = n->subscribe<std_msgs::Char>("/lolo/core/usbl/transmit", 1, &RosInterFace::ros_callback_usbl_transmit, this);
 
+  /*
   //Control commands: High level
   waypoint_sub  = n->subscribe<geographic_msgs::GeoPoint>("/lolo/ctrl/waypoint_setpoint"  ,1, &RosInterFace::ros_callback_waypoint, this);
   speed_sub     = n->subscribe<std_msgs::Float64>("/lolo/ctrl/speed_setpoint"       ,1, &RosInterFace::ros_callback_speed,this);
@@ -29,7 +30,8 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   yawrate_sub   = n->subscribe<std_msgs::Float64>("/lolo/ctrl/yawrate_setpoint"      ,1, &RosInterFace::ros_callback_yawrate,this);
   pitch_sub     = n->subscribe<std_msgs::Float64>("/lolo/ctrl/pitch_setpoint"        ,1, &RosInterFace::ros_callback_pitch,this);
   rpm_sub       = n->subscribe<smarc_msgs::ThrusterRPM>("/lolo/ctrl/rpm_setpoint"          ,1, &RosInterFace::ros_callback_rpm, this);
-
+  */
+ 
   //Control commands low level
   //Thruster
   thrusterPort_sub = n->subscribe<smarc_msgs::ThrusterRPM>("/lolo/core/thruster1_cmd", 1, &RosInterFace::ros_callback_thrusterPort, this);
@@ -52,7 +54,7 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   //==================================//
 
   //USBL
-  usbl_pub             = n->advertise<std_msgs::Char>("lolo/core/usbl_received", 10);
+  usbl_pub             = n->advertise<std_msgs::Char>("/lolo/core/usbl/received", 10);
 
   // --- Thrusters --- //
   thrusterPort_pub     = n->advertise<smarc_msgs::ThrusterFeedback>("/lolo/core/thruster1_fb", 10);
@@ -74,14 +76,14 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   //Leak sensors
   leak_dome   = n->advertise<smarc_msgs::Leak>("/lolo/core/leak", 10);
 
-  control_status_pub        = n->advertise<lolo_msgs::CaptainStatus>("/lolo/core/control_status", 10);
-  ctrl_status_waypoint_pub  = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_waypoint_controller_status",10);
-  ctrl_status_yaw_pub       = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_yaw_controller_status",10);
-  ctrl_status_yawrate_pub   = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_yawrate_controller_status",10);
-  ctrl_status_depth_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_depth_controller_status",10);
-  ctrl_status_altitude_pub  = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_altitude_controller_status",10);
-  ctrl_status_pitch_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_pitch_controller_status",10);
-  ctrl_status_speed_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_speed_controller_status",10);
+  //control_status_pub        = n->advertise<lolo_msgs::CaptainStatus>("/lolo/core/control_status", 10);
+  //ctrl_status_waypoint_pub  = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_waypoint_controller_status",10);
+  //ctrl_status_yaw_pub       = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_yaw_controller_status",10);
+  //ctrl_status_yawrate_pub   = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_yawrate_controller_status",10);
+  //ctrl_status_depth_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_depth_controller_status",10);
+  //ctrl_status_altitude_pub  = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_altitude_controller_status",10);
+  //ctrl_status_pitch_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_pitch_controller_status",10);
+  //ctrl_status_speed_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_speed_controller_status",10);
   //ctrl_status_rpm_pub      = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_rpm_controller_status");
   //ctrl_status_rpm_strb_pub = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_rpm_strb_controller_status");
   //ctrl_status_rpm_port_pub = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_rpm_port_controller_status");

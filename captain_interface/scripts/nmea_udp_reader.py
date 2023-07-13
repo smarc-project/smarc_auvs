@@ -41,7 +41,7 @@ def main():
                 msg = Sentence()
                 msg.sentence = line
                 sentence_pub.publish(msg)
-                print(line)
+                #print(line)
                 buffer_index = 0
             
             if(buffer_index > BUFFER_SIZE-1):
