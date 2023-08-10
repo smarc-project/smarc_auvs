@@ -1,16 +1,17 @@
 SESSION=lolo_bringup
 
-# Lidingo
-#UTM_ZONE=34
-#UTM_BAND=V
 
-# Kristineberg
-#UTM_ZONE=32
-#UTM_BAND=V
-
-# Rest of Sweden
+LATITUDE=58.811480
+LONGITUDE=17.596177
 UTM_ZONE=33
 UTM_BAND=V
+ORIGIN_OFFSET_NORTH=6521967.47 #Utm coordinates for the LAT/LON in zone 33V
+ORIGIN_OFFSET_EAST=649947.08 
+
+#TODO calculate UTM zone offset based on lat lon origin and utm zone and band
+#<arg name="origin_latitude" default="58.811480"/>
+#<arg name="origin_longitude" default="17.596177"/>
+
 
 #Ip adress of the captain
 CAPTAIN_IP=192.168.1.90
@@ -28,7 +29,7 @@ tmux new-window -n 'Hardware2'
 tmux send-keys "sleep 3; roslaunch lolo_drivers lolo_core_hardware2.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'tf'
-tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
+tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND map_origin_north:=$ORIGIN_OFFSET_NORTH map_origin_east:=$ORIGIN_OFFSET_EAST captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'action'
 tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m

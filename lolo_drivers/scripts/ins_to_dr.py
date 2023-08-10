@@ -49,19 +49,18 @@ from std_msgs.msg import Float64
 # core/ins
 from ixblue_ins_msgs.msg import Ins
 from geometry_msgs.msg import PoseStamped
-
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Imu
 from smarc_msgs.srv import LatLonToUTM
 
 class INSDr(object):
     def __init__(self,
                  ins_topic = "core/ins",
+                 imu_topic = "core/imu",
                  robot_name = "lolo",
                  latlontoutm_service_name = "lat_lon_to_utm"):
         self.robot_name = robot_name
-        self.ins_sub = rospy.Subscriber("/"+robot_name+"/"+ins_topic,
-                                        Ins,
-                                        self.ins_cb,
-                                        queue_size=1)
+        self.twist_msg = Twist()
 
 
         topic_root = "/"+robot_name+"/dr/"
@@ -70,8 +69,20 @@ class INSDr(object):
         self.roll_pub = rospy.Publisher(topic_root+"roll", Float64, queue_size=1)
         self.pitch_pub = rospy.Publisher(topic_root+"pitch", Float64, queue_size=1)
         self.yaw_pub = rospy.Publisher(topic_root+"yaw", Float64, queue_size=1)
+        self.twist_pub = rospy.Publisher(topic_root+"twist", Twist, queue_size=1)
 
         latlontoutm_service_name = topic_root + latlontoutm_service_name
+
+        self.ins_sub = rospy.Subscriber("/"+robot_name+"/"+ins_topic,
+                                        Ins,
+                                        self.ins_cb,
+                                        queue_size=1)
+        self.imu_sub = rospy.Subscriber("/"+robot_name+"/"+imu_topic,
+                                        Imu,
+                                        self.imu_cb,
+                                        queue_size=1)
+
+
         while not rospy.is_shutdown():
             try:
                 rospy.loginfo("Waiting for {} service...".format(latlontoutm_service_name))
@@ -86,6 +97,10 @@ class INSDr(object):
         self.tfcaster = tf.TransformBroadcaster()
         self.tflistener = tf.TransformListener()
 
+    def imu_cb(self,msg):
+        self.twist_msg.angular.x = msg.angular_velocity.x
+        self.twist_msg.angular.y = msg.angular_velocity.y
+        self.twist_msg.angular.z = msg.angular_velocity.z
 
     def ins_cb(self, msg):
 
@@ -104,9 +119,12 @@ class INSDr(object):
         self.pitch_pub.publish(msg.pitch)
         self.yaw_pub.publish(msg.heading)
 
+        self.twist_msg.linear = msg.speed_vessel_frame
+        self.twist_pub.publish(self.twist_msg)
+
         # okay, now publish the same thing, as part of TF
         utm_res = self.ll2utm_service(ll)
-        # we could have published utm->base link, but we should probably do world_ned->baselink instead
+        # we could have published utm->base link, but we should probably do map->baselink instead
         # so gotta transform this utm point to a world_ned point first
         ps = PoseStamped()
         ps.header.frame_id = "utm"
@@ -120,7 +138,7 @@ class INSDr(object):
         ps.pose.orientation.w = quat[3]
 
         # now we publish the world_ned version of this utm pose
-        world_ned_ps = self.tflistener.transformPose("world_ned", ps)
+        world_ned_ps = self.tflistener.transformPose("map", ps)
         self.tfcaster.sendTransform((world_ned_ps.pose.position.x,
                                      world_ned_ps.pose.position.y,
                                      world_ned_ps.pose.position.z),
@@ -130,7 +148,7 @@ class INSDr(object):
                                      world_ned_ps.pose.orientation.w),
                                     rospy.Time.now(),
                                     self.robot_name+"/base_link",
-                                    "world_ned")
+                                    "map")
 
 
 

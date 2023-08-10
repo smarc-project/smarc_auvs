@@ -29,8 +29,7 @@
 <node name="ins_republish" type="relay" pkg="topic_tools" args="/ixblue_ins_driver/ix/ins /lolo/core/ins" output="screen"/>
 <node name="imu_republish" type="relay" pkg="topic_tools" args="/ixblue_ins_driver/standard/imu /lolo/core/imu" output="screen"/>
 
-<!-- TODO DVL node (s) -->
-<!-- node name="dvl_to_altitude" type="dvl_to_altitude.py" pkg="lolo_drivers" output="screen"/> -->
+<!-- TODO DVL node -->
 
 <!-- TODO CTD node -->
 
