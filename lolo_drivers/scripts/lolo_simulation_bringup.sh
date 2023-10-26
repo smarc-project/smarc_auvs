@@ -3,7 +3,9 @@ SESSION=lolo_bringup
 #Settings
 SIMULATION_RATE=300
 GFX_QUALITY="low" # high/medium/low
-SCENARIO="biograd_world"
+#SCENARIO="biograd_world"
+SCENARIO="kristineberg_world"
+#SCENARIO="asko_world"
 
 # ADD other environments to the list here
 # the initial position of the robots are defined in the scenario files
@@ -16,7 +18,6 @@ case "$SCENARIO" in
 		LONGITUDE=17.596177
 		ORIGIN_OFFSET_NORTH=6521967.47
 		ORIGIN_OFFSET_EAST=649947.08 
-		CAR_DEPTH=10
 		;;
 	"biograd_world")
 		# Biograd
@@ -27,14 +28,22 @@ case "$SCENARIO" in
 		ORIGIN_OFFSET_NORTH=4864396.61
 		ORIGIN_OFFSET_EAST=535528.89
 		;;
-	"biograd_world")
-		# Biograd
-		UTM_ZONE=33
-		UTM_BAND=T
-		LATITUDE=43.93183
-		LONGITUDE=15.44264
-		ORIGIN_OFFSET_NORTH=4864396.61
-		ORIGIN_OFFSET_EAST=535528.89
+	"algae_world")
+        # Algae farm (2 long ropes)
+		UTM_ZONE=32
+		UTM_BAND=V
+		LATITUDE=58.250833
+		LONGITUDE=11.450283
+		ORIGIN_OFFSET_NORTH=6459252.08
+		ORIGIN_OFFSET_EAST=643800.54
+		;;
+	"kristineberg_world")
+		UTM_ZONE=32
+		UTM_BAND=V
+		LATITUDE=58.249721
+		LONGITUDE=11.44624
+		ORIGIN_OFFSET_NORTH=6459119.70
+		ORIGIN_OFFSET_EAST=643567.83
 		;;
 	*)
 		echo "UNKNOWN SCENARIO!"
