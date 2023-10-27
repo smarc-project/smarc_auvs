@@ -100,8 +100,8 @@ tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$U
 tmux new-window -n 'action'
 tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
 
-#tmux new-window -n 'bt'
-#tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo" C-m
+tmux new-window -n 'bt'
+tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo"
 
 #tmux new-window -n 'mbes_node'
 #tmux send-keys "sleep 5; roslaunch r2sonic_mbes r2sonic_mbes.launch" C-m
@@ -115,9 +115,9 @@ tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot
 #tmux new-window -n 'bathy_node'
 #tmux send-keys "sleep 5; rosrun r2sonic_mbes image_array_node"
 
-# tmux new-window -n 'logging'
-# tmux send-keys "cd /xavier_ssd/LOGS/" C-m
-# tmux send-keys "sleep 5; rosbag record -a --split --duration=1800"
+tmux new-window -n 'logging'
+tmux send-keys "cd /tmp/" C-m
+tmux send-keys "sleep 5; rosbag record -a --split --duration=1800"
 
 # Set default window
 tmux select-window -t $SESSION:0

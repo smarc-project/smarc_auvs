@@ -14,7 +14,10 @@
     <arg name="namespace" value="$(arg robot_name)"/>
 </include>
 
-<node name="map2ned" pkg="tf" type="static_transform_publisher" args="0 0 0 1.571 0 3.1416 map world_ned 100"/>
+<!-- Why do we need this? -->
+<!--<node name="map2ned" pkg="tf" type="static_transform_publisher" args="0 0 0 1.571 0 3.1416 map world_ned 100"/> -->
+
+<!-- Static transform between UTM and map Allows us to have the origin of map anywhere inside (or outside) the UTM zone -->
 <node name="utm2map" pkg="tf" type="static_transform_publisher" args="$(arg map_origin_east) $(arg map_origin_north) 0 0 0 0 1 utm map 100" />
 
 <group ns="lolo">

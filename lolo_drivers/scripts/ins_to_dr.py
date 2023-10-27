@@ -125,7 +125,6 @@ class INSDr(object):
         # okay, now publish the same thing, as part of TF
         utm_res = self.ll2utm_service(ll)
         # we could have published utm->base link, but we should probably do map->baselink instead
-        # so gotta transform this utm point to a world_ned point first
         ps = PoseStamped()
         ps.header.frame_id = "utm"
         ps.pose.position.x = utm_res.utm_point.x
@@ -137,15 +136,15 @@ class INSDr(object):
         ps.pose.orientation.z = quat[2]
         ps.pose.orientation.w = quat[3]
 
-        # now we publish the world_ned version of this utm pose
-        world_ned_ps = self.tflistener.transformPose("map", ps)
-        self.tfcaster.sendTransform((world_ned_ps.pose.position.x,
-                                     world_ned_ps.pose.position.y,
-                                     world_ned_ps.pose.position.z),
-                                    (world_ned_ps.pose.orientation.x,
-                                     world_ned_ps.pose.orientation.y,
-                                     world_ned_ps.pose.orientation.z,
-                                     world_ned_ps.pose.orientation.w),
+        # now we publish the map version of this utm pose
+        map_ps = self.tflistener.transformPose("map", ps)
+        self.tfcaster.sendTransform((map_ps.pose.position.x,
+                                     map_ps.pose.position.y,
+                                     map_ps.pose.position.z),
+                                    (map_ps.pose.orientation.x,
+                                     map_ps.pose.orientation.y,
+                                     map_ps.pose.orientation.z,
+                                     map_ps.pose.orientation.w),
                                     rospy.Time.now(),
                                     self.robot_name+"/base_link",
                                     "map")
