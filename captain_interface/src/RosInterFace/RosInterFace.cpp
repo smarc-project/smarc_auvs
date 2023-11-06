@@ -76,20 +76,43 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   //Leak sensors
   leak_dome   = n->advertise<smarc_msgs::Leak>("/lolo/core/leak", 10);
 
-  //control_status_pub        = n->advertise<lolo_msgs::CaptainStatus>("/lolo/core/control_status", 10);
-  //ctrl_status_waypoint_pub  = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_waypoint_controller_status",10);
-  //ctrl_status_yaw_pub       = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_yaw_controller_status",10);
-  //ctrl_status_yawrate_pub   = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_yawrate_controller_status",10);
-  //ctrl_status_depth_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_depth_controller_status",10);
-  //ctrl_status_altitude_pub  = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_altitude_controller_status",10);
-  //ctrl_status_pitch_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_pitch_controller_status",10);
-  //ctrl_status_speed_pub     = n->advertise<smarc_msgs::ControllerStatus>("/lolo/ctrl/onboard_speed_controller_status",10);
-  //ctrl_status_rpm_pub      = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_rpm_controller_status");
-  //ctrl_status_rpm_strb_pub = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_rpm_strb_controller_status");
-  //ctrl_status_rpm_port_pub = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_rpm_port_controller_status");
-  //ctrl_status_elevator_pub = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_elevator_controller_status");
-  //ctrl_status_rudder_pub   = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_rudder_controller_status");
-  //ctrl_status_VBS_pub      = n->advertise<lolo_msgs::ControllerStatus>("/lolo/ctrl/onboard_VBS_controller_status");
+  //Temperature sensors
+  temperature_cap_cpu_pub          = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_cpu",  1);
+  temperature_time_cpu_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/time_cpu", 1);
+  temperature_cap_sensor1_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor1", 1);
+  temperature_cap_sensor2_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor2", 1);
+  temperature_cap_sensor3_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor3", 1);
+  temperature_isb_usbl_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_usbl", 1);
+  temperature_isb_4G_pub           = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_4G", 1);
+  temperature_isb_ethernet_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_ethernet", 1);
+  temperature_isb_strobe_pub       = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_strobe", 1);
+  temperature_isb_wifi_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_wifi", 1);
+  temperature_isb_rudders_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_rudders",  1);
+  temperature_isb_elevons_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_rlevons",  1);
+  temperature_isb_elevator_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_elevator", 1);
+  temperature_isb_thruster_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_thruster",  1);
+  temperature_isb_scientist_pub    = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_scientist",  1);
+  temperature_isb_edw_pub          = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_edw",  1);
+  temperature_isb_battery_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_battery",  1);
+  temperature_battery_sensor1_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor1",  1);
+  temperature_battery_sensor2_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor2",  1);
+  temperature_battery_sensor3_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor3",  1);
+  temperature_battery_sensor4_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor4",  1);
+  temperature_battery_sensor5_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor5",  1);
+
+  //pressure sensors
+  pressure_isb_usbl_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_usbl", 1);
+  pressure_isb_4G_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_4G", 1);
+  pressure_isb_ethernet_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_ethernet", 1);
+  pressure_isb_strobe_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_strobe", 1);
+  pressure_isb_wifi_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_wifi", 1);
+  pressure_isb_rudders_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_rudders", 1);
+  pressure_isb_elevons_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_elevons", 1);
+  pressure_isb_elevator_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_elevator", 1);
+  pressure_isb_thruster_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_thruster", 1);
+  pressure_isb_scientist_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_scientist", 1);
+  pressure_isb_edw_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_edw", 1);
+  pressure_isb_battery_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_battery", 1);
 
   //"Service"
   service_pub             = n->advertise<lolo_msgs::CaptainService>("/lolo/core/captain_srv_out", 10);

@@ -8,8 +8,8 @@
 #ifndef captainscientistmessages
 #define captainscientistmessages
 
-//V1.1
-//2021 11 06
+//V1.2
+//2023 11 06
 
 //CAPTAIN -> SCIENTIST
 #define CS_LEAK             7
@@ -20,16 +20,11 @@
 #define CS_THRUSTER_PORT    13
 #define CS_THRUSTER_STRB    14
 #define CS_BATTERY          15
-//#define CS_DVL              16
-//#define CS_GPS              17
-//#define CS_IMU              18
-//#define CS_MAG              19
-//#define CS_PRESSURE         20
+#define CS_TEMP             16 //Internal temperatures
+#define CS_BARO             17 //Internal pressures
+
 #define CS_ELEVON_STRB      21
 #define CS_ELEVON_PORT      22
-//#define CS_VBS              23
-//#define CS_POSITION         24
-//#define CS_FLS              25
 #define CS_CTRL_STATUS      26
 #define CS_SENSOR_STATUS    27
 #define CS_TEXT             40
@@ -38,9 +33,6 @@
 #define CS_MISSIONLOG       51
 #define CS_DATALOG          52
 #define CS_REQUEST_OUT      100
-#define CS_DVL_PD0_FIXED         28
-#define CS_DVL_PD0_VARIABLE      29
-#define CS_DVL_PD0_BOTTOMTRACK   30
 
 
 //SCIENTIST -> CAPTAIN

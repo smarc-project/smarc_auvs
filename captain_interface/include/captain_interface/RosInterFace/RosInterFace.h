@@ -149,6 +149,45 @@ struct RosInterFace {
   //Lolo onboard console
   ros::Publisher menu_pub;
 
+  //Temperature sensor publishers
+  ros::Publisher temperature_cap_cpu_pub;
+  ros::Publisher temperature_time_cpu_pub;
+  ros::Publisher temperature_cap_sensor1_pub;
+  ros::Publisher temperature_cap_sensor2_pub;
+  ros::Publisher temperature_cap_sensor3_pub;
+  ros::Publisher temperature_isb_usbl_pub;
+  ros::Publisher temperature_isb_4G_pub;
+  ros::Publisher temperature_isb_ethernet_pub;
+  ros::Publisher temperature_isb_strobe_pub;
+  ros::Publisher temperature_isb_wifi_pub;
+  ros::Publisher temperature_isb_rudders_pub;
+  ros::Publisher temperature_isb_elevons_pub;
+  ros::Publisher temperature_isb_elevator_pub;
+  ros::Publisher temperature_isb_thruster_pub;
+  ros::Publisher temperature_isb_scientist_pub;
+  ros::Publisher temperature_isb_edw_pub;
+  ros::Publisher temperature_isb_battery_pub;
+  ros::Publisher temperature_battery_sensor1_pub;
+  ros::Publisher temperature_battery_sensor2_pub;
+  ros::Publisher temperature_battery_sensor3_pub;
+  ros::Publisher temperature_battery_sensor4_pub;
+  ros::Publisher temperature_battery_sensor5_pub;
+
+  //Pressure sensor publishers
+  ros::Publisher pressure_isb_usbl_pub;
+  ros::Publisher pressure_isb_4G_pub;
+  ros::Publisher pressure_isb_ethernet_pub;
+  ros::Publisher pressure_isb_strobe_pub;
+  ros::Publisher pressure_isb_wifi_pub;
+  ros::Publisher pressure_isb_rudders_pub;
+  ros::Publisher pressure_isb_elevons_pub;
+  ros::Publisher pressure_isb_elevator_pub;
+  ros::Publisher pressure_isb_thruster_pub;
+  ros::Publisher pressure_isb_scientist_pub;
+  ros::Publisher pressure_isb_edw_pub;
+  ros::Publisher pressure_isb_battery_pub;
+
+
   //Controller status publishers
   ros::Publisher ctrl_status_waypoint_pub;
   ros::Publisher ctrl_status_yaw_pub;
@@ -215,6 +254,8 @@ struct RosInterFace {
   void captain_callback_MISSIONLOG();
   void captain_callback_DATALOG();
   void captain_callback_USBL_RECEIVED();
+  void captain_callback_TEMP();
+  void captain_callback_BARO();
 
   void captain_callback() {
     int msgID = captain->messageID();
@@ -234,6 +275,8 @@ struct RosInterFace {
       case CS_MISSIONLOG: {   captain_callback_MISSIONLOG(); } break; //Mission log stream data}
       case CS_DATALOG: {      captain_callback_DATALOG(); } break; //Data log stream data}
       case CS_USBL_RECEIVED: {captain_callback_USBL_RECEIVED(); } break; //USBL received}
+      case CS_TEMP: {         captain_callback_TEMP();} break; //Data from temperature sensors inside lolo
+      case CS_BARO: {         captain_callback_BARO();} break; //Data from pressure sensors inside lolo
     };
   };
 };
