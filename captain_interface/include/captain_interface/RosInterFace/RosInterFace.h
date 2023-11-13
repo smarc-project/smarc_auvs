@@ -156,10 +156,10 @@ struct RosInterFace {
   ros::Publisher temperature_cap_sensor2_pub;
   ros::Publisher temperature_cap_sensor3_pub;
   ros::Publisher temperature_isb_usbl_pub;
-  ros::Publisher temperature_isb_4G_pub;
-  ros::Publisher temperature_isb_ethernet_pub;
+  //ros::Publisher temperature_isb_4G_pub;
+  //ros::Publisher temperature_isb_ethernet_pub;
   ros::Publisher temperature_isb_strobe_pub;
-  ros::Publisher temperature_isb_wifi_pub;
+  //ros::Publisher temperature_isb_wifi_pub;
   ros::Publisher temperature_isb_rudders_pub;
   ros::Publisher temperature_isb_elevons_pub;
   ros::Publisher temperature_isb_elevator_pub;
@@ -175,10 +175,10 @@ struct RosInterFace {
 
   //Pressure sensor publishers
   ros::Publisher pressure_isb_usbl_pub;
-  ros::Publisher pressure_isb_4G_pub;
-  ros::Publisher pressure_isb_ethernet_pub;
+  //ros::Publisher pressure_isb_4G_pub;
+  //ros::Publisher pressure_isb_ethernet_pub;
   ros::Publisher pressure_isb_strobe_pub;
-  ros::Publisher pressure_isb_wifi_pub;
+  //ros::Publisher pressure_isb_wifi_pub;
   ros::Publisher pressure_isb_rudders_pub;
   ros::Publisher pressure_isb_elevons_pub;
   ros::Publisher pressure_isb_elevator_pub;

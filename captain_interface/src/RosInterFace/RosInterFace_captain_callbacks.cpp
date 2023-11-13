@@ -292,10 +292,10 @@ void RosInterFace::captain_callback_TEMP()
   float temperature_cap_sensor2 = captain->parse_float();
   float temperature_cap_sensor3 = captain->parse_float();
   float temperature_isb_usbl = captain->parse_float();
-  float temperature_isb_4G = captain->parse_float();
-  float temperature_isb_ethernet = captain->parse_float();
+  //float temperature_isb_4G = captain->parse_float();
+  //float temperature_isb_ethernet = captain->parse_float();
   float temperature_isb_strobe = captain->parse_float();
-  float temperature_isb_wifi = captain->parse_float();
+  //float temperature_isb_wifi = captain->parse_float();
   float temperature_isb_rudders = captain->parse_float();
   float temperature_isb_elevons = captain->parse_float();
   float temperature_isb_elevator = captain->parse_float();
@@ -315,10 +315,10 @@ void RosInterFace::captain_callback_TEMP()
   std_msgs::Float32 temperature_cap_sensor2_msg; temperature_cap_sensor2_msg.data = temperature_cap_sensor2;
   std_msgs::Float32 temperature_cap_sensor3_msg; temperature_cap_sensor3_msg.data = temperature_cap_sensor3;
   std_msgs::Float32 temperature_isb_usbl_msg; temperature_isb_usbl_msg.data = temperature_isb_usbl;
-  std_msgs::Float32 temperature_isb_4G_msg; temperature_isb_4G_msg.data = temperature_isb_4G;
-  std_msgs::Float32 temperature_isb_ethernet_msg; temperature_isb_ethernet_msg.data = temperature_isb_ethernet;
+  //std_msgs::Float32 temperature_isb_4G_msg; temperature_isb_4G_msg.data = temperature_isb_4G;
+  //std_msgs::Float32 temperature_isb_ethernet_msg; temperature_isb_ethernet_msg.data = temperature_isb_ethernet;
   std_msgs::Float32 temperature_isb_strobe_msg; temperature_isb_strobe_msg.data = temperature_isb_strobe;
-  std_msgs::Float32 temperature_isb_wifi_msg; temperature_isb_wifi_msg.data = temperature_isb_wifi;
+  //std_msgs::Float32 temperature_isb_wifi_msg; temperature_isb_wifi_msg.data = temperature_isb_wifi;
   std_msgs::Float32 temperature_isb_rudders_msg; temperature_isb_rudders_msg.data = temperature_isb_rudders;
   std_msgs::Float32 temperature_isb_elevons_msg; temperature_isb_elevons_msg.data = temperature_isb_elevons;
   std_msgs::Float32 temperature_isb_elevator_msg; temperature_isb_elevator_msg.data = temperature_isb_elevator;
@@ -338,10 +338,10 @@ void RosInterFace::captain_callback_TEMP()
   temperature_cap_sensor2_pub.publish(temperature_cap_sensor2_msg);
   temperature_cap_sensor3_pub.publish(temperature_cap_sensor3_msg);
   temperature_isb_usbl_pub.publish(temperature_isb_usbl_msg);
-  temperature_isb_4G_pub.publish(temperature_isb_4G_msg);
-  temperature_isb_ethernet_pub.publish(temperature_isb_ethernet_msg);
+  //temperature_isb_4G_pub.publish(temperature_isb_4G_msg);
+  //temperature_isb_ethernet_pub.publish(temperature_isb_ethernet_msg);
   temperature_isb_strobe_pub.publish(temperature_isb_strobe_msg);
-  temperature_isb_wifi_pub.publish(temperature_isb_wifi_msg);
+  //temperature_isb_wifi_pub.publish(temperature_isb_wifi_msg);
   temperature_isb_rudders_pub.publish(temperature_isb_rudders_msg);
   temperature_isb_elevons_pub.publish(temperature_isb_elevons_msg);
   temperature_isb_elevator_pub.publish(temperature_isb_elevator_msg);
@@ -359,10 +359,10 @@ void RosInterFace::captain_callback_TEMP()
 void RosInterFace::captain_callback_BARO() {
 
   float pressure_isb_usbl = captain->parse_float();
-  float pressure_isb_4G = captain->parse_float();
-  float pressure_isb_ethernet = captain->parse_float();
+  //float pressure_isb_4G = captain->parse_float();
+  //float pressure_isb_ethernet = captain->parse_float();
   float pressure_isb_strobe = captain->parse_float();
-  float pressure_isb_wifi = captain->parse_float();
+  //float pressure_isb_wifi = captain->parse_float();
   float pressure_isb_rudders = captain->parse_float();
   float pressure_isb_elevons = captain->parse_float();
   float pressure_isb_elevator = captain->parse_float();
@@ -373,10 +373,10 @@ void RosInterFace::captain_callback_BARO() {
 
 
   std_msgs::Float32 pressure_isb_usbl_msg; pressure_isb_usbl_msg.data = pressure_isb_usbl;
-  std_msgs::Float32 pressure_isb_4G_msg; pressure_isb_4G_msg.data = pressure_isb_4G;
-  std_msgs::Float32 pressure_isb_ethernet_msg; pressure_isb_ethernet_msg.data = pressure_isb_ethernet;
+  //std_msgs::Float32 pressure_isb_4G_msg; pressure_isb_4G_msg.data = pressure_isb_4G;
+  //std_msgs::Float32 pressure_isb_ethernet_msg; pressure_isb_ethernet_msg.data = pressure_isb_ethernet;
   std_msgs::Float32 pressure_isb_strobe_msg; pressure_isb_strobe_msg.data = pressure_isb_strobe;
-  std_msgs::Float32 pressure_isb_wifi_msg; pressure_isb_wifi_msg.data = pressure_isb_wifi;
+  //std_msgs::Float32 pressure_isb_wifi_msg; pressure_isb_wifi_msg.data = pressure_isb_wifi;
   std_msgs::Float32 pressure_isb_rudders_msg; pressure_isb_rudders_msg.data = pressure_isb_rudders;
   std_msgs::Float32 pressure_isb_elevons_msg; pressure_isb_elevons_msg.data = pressure_isb_elevons;
   std_msgs::Float32 pressure_isb_elevator_msg; pressure_isb_elevator_msg.data = pressure_isb_elevator;
@@ -386,10 +386,10 @@ void RosInterFace::captain_callback_BARO() {
   std_msgs::Float32 pressure_isb_battery_msg; pressure_isb_battery_msg.data = pressure_isb_battery;
 
   pressure_isb_usbl_pub.publish(pressure_isb_usbl_msg);
-  pressure_isb_4G_pub.publish(pressure_isb_4G_msg);
-  pressure_isb_ethernet_pub.publish(pressure_isb_ethernet_msg);
+  //pressure_isb_4G_pub.publish(pressure_isb_4G_msg);
+  //pressure_isb_ethernet_pub.publish(pressure_isb_ethernet_msg);
   pressure_isb_strobe_pub.publish(pressure_isb_strobe_msg);
-  pressure_isb_wifi_pub.publish(pressure_isb_wifi_msg);
+  //pressure_isb_wifi_pub.publish(pressure_isb_wifi_msg);
   pressure_isb_rudders_pub.publish(pressure_isb_rudders_msg);
   pressure_isb_elevons_pub.publish(pressure_isb_elevons_msg);
   pressure_isb_elevator_pub.publish(pressure_isb_elevator_msg);

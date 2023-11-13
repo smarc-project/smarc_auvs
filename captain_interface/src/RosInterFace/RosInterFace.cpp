@@ -83,10 +83,10 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   temperature_cap_sensor2_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor2", 1);
   temperature_cap_sensor3_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor3", 1);
   temperature_isb_usbl_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_usbl", 1);
-  temperature_isb_4G_pub           = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_4G", 1);
-  temperature_isb_ethernet_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_ethernet", 1);
+  //temperature_isb_4G_pub           = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_4G", 1);
+  //temperature_isb_ethernet_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_ethernet", 1);
   temperature_isb_strobe_pub       = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_strobe", 1);
-  temperature_isb_wifi_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_wifi", 1);
+  //temperature_isb_wifi_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_wifi", 1);
   temperature_isb_rudders_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_rudders",  1);
   temperature_isb_elevons_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_rlevons",  1);
   temperature_isb_elevator_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_elevator", 1);
@@ -102,10 +102,10 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
 
   //pressure sensors
   pressure_isb_usbl_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_usbl", 1);
-  pressure_isb_4G_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_4G", 1);
-  pressure_isb_ethernet_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_ethernet", 1);
+  //pressure_isb_4G_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_4G", 1);
+  //pressure_isb_ethernet_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_ethernet", 1);
   pressure_isb_strobe_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_strobe", 1);
-  pressure_isb_wifi_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_wifi", 1);
+  //pressure_isb_wifi_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_wifi", 1);
   pressure_isb_rudders_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_rudders", 1);
   pressure_isb_elevons_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_elevons", 1);
   pressure_isb_elevator_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_elevator", 1);
