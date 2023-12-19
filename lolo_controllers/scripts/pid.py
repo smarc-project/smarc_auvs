@@ -4,6 +4,7 @@ import math
 import numpy as np
 import rospy
 from std_msgs.msg import Float64
+import geometry as geom
 
 #Basic PID regulator
 class PID(object):
@@ -25,6 +26,7 @@ class PID(object):
         self.last_meassurement = None
 
     def update_error(self, error):
+        #print("PID update: " + str(error))
         current_time_s = rospy.get_time()
         dt = current_time_s - self.last_update if self.last_update is not None else None
 
@@ -57,20 +59,18 @@ class PID(object):
         self.last_error = error
 
         return max(-self.max_output, min(self.max_output, output)) if self.max_output is not None else output
-    
-    def update(self, meassurement, setpoint):
-        print("PID update")
-        error = setpoint - meassurement
-        return self.update_error(error)
+
+        
     
 #Wrapper for the PID class with subscribers and publishers
 class PID_wrapper(object):
-    def __init__(self, PID, meassurement_topic, setpoint_topic ,output_topic):
+    def __init__(self, PID, meassurement_topic, setpoint_topic ,output_topic, version='Normal'):
         self.meassurement = 0
         self.meassurement_time = 0
         self.setpoint = 0
         self.setpoint_time = 0
         self.pid = PID
+        self.version = version
 
         self.meassurement_sub = rospy.Subscriber(meassurement_topic, Float64, self.meassurement_cb, queue_size=1)
         self.setpoint_sub = rospy.Subscriber(setpoint_topic, Float64, self.setpoint_cb, queue_size=1)
@@ -90,7 +90,14 @@ class PID_wrapper(object):
         #print("wrapper update")
         now = rospy.get_time()
         if(now - self.meassurement_time < 1 and now - self.setpoint_time < 1):
-            output = self.pid.update(self.meassurement, self.setpoint)
+            if self.version == 'Yaw':
+                setpoint = np.array([np.cos(self.setpoint) , np.sin(self.setpoint)])
+                meassurement = np.array([np.cos(self.meassurement) , np.sin(self.meassurement)])
+                error = geom.vec2_directed_angle(setpoint, meassurement)
+                print("Yaw controller update")
+            else:
+                error = self.setpoint - self.meassurement
+            output = self.pid.update_error(error)
             self.output_pub.publish(output)
         else:
             pass
@@ -104,6 +111,7 @@ if __name__ == '__main__':
     i_gain = float(rospy.get_param("~i_gain", 0 ))
     d_gain = float(rospy.get_param("~d_gain", 0))
     output_limit = float(rospy.get_param("~output_limit", 0))
+    controller_type = rospy.get_param("~controller_type", 'Normal')
 
     meassurement_topic = rospy.get_param("~meassurement_topic", "/pid_test/meassurement")
     setpoint_topic = rospy.get_param("~setpoint_topic", "/pid_test/setpoint")
@@ -114,7 +122,7 @@ if __name__ == '__main__':
     print("Output topic " + output_topic)
     
     pid = PID(p_gain,i_gain,d_gain, output_limit)
-    wrapper = PID_wrapper(pid, meassurement_topic, setpoint_topic, output_topic)
+    wrapper = PID_wrapper(pid, meassurement_topic, setpoint_topic, output_topic, controller_type)
 
     r = rospy.Rate(update_rate)
     while not rospy.is_shutdown():

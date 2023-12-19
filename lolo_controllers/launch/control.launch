@@ -6,17 +6,18 @@
 
   <!-- Yaw+yawrate controllers-->
   <node name="lolo_yaw_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
-    <param name="p_gain" value="1" />
+    <param name="p_gain" value="2" />
     <param name="i_gain" value="0" />
     <param name="d_gain" value="0" />
     <param name="output_limit" value="0.2" />
     <param name="meassurement_topic" value="/lolo/dr/yaw" />
     <param name="setpoint_topic" value="/lolo/ctrl/yaw_setpoint" />
     <param name="output_topic" value="/lolo/ctrl/yawrate_setpoint" />
+    <param name="controller_type" value="Yaw" />
   </node>
 
   <node name="lolo_yawrate_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
-    <param name="p_gain" value="1" />
+    <param name="p_gain" value="10" />
     <param name="i_gain" value="0" />
     <param name="d_gain" value="0" />
     <param name="output_limit" value="0.7" />
@@ -77,7 +78,12 @@
     <param name="output_topic" value="/lolo/ctrl/pitch_actuation" />
   </node>
 
-  <node name="tester" pkg="lolo_controllers" type="pid_test3.py" output="screen" ns = "/lolo/ctrl" >
+   <node name="lolo_control_mixer" pkg="lolo_controllers" type="mixer.py" output="screen" ns = "/lolo/ctrl" >
   </node>
+
+  <!-- PID test 
+  <node name="tester" pkg="lolo_controllers" type="pid_test.py" output="screen" ns = "/lolo/ctrl" >
+  </node>
+  -->
 
 </launch>
