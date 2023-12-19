@@ -1,0 +1,18 @@
+<launch>
+
+  <!-- launchfile for testing PID conroller. -->
+
+  <node name="pid1" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="5" />
+    <param name="meassurement_topic" value="pid_testing_meassurement" />
+    <param name="setpoint_topic" value="pid_testing_setpoint" />
+    <param name="output_topic" value="pid_testing_output" />
+  </node>
+
+  <node name="tester" pkg="lolo_controllers" type="pid_test.py" output="screen" ns = "/lolo/ctrl" >
+  </node>
+
+</launch>

@@ -1,0 +1,83 @@
+<launch>
+
+  <!-- launchfile for PID conrollers. -->
+
+  <!-- TODO WP -> yaw -->
+
+  <!-- Yaw+yawrate controllers-->
+  <node name="lolo_yaw_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="0.2" />
+    <param name="meassurement_topic" value="/lolo/dr/yaw" />
+    <param name="setpoint_topic" value="/lolo/ctrl/yaw_setpoint" />
+    <param name="output_topic" value="/lolo/ctrl/yawrate_setpoint" />
+  </node>
+
+  <node name="lolo_yawrate_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="0.7" />
+    <param name="meassurement_topic" value="/lolo/dr/yawrate" />
+    <param name="setpoint_topic" value="/lolo/ctrl/yawrate_setpoint" />
+    <param name="output_topic" value="/lolo/ctrl/yaw_actuation" />
+  </node>
+
+  <!-- roll+rollrate controllers-->
+  <node name="lolo_roll_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="0.2" />
+    <param name="meassurement_topic" value="/lolo/dr/roll" />
+    <param name="setpoint_topic" value="/lolo/ctrl/roll_setpoint" />
+    <param name="output_topic" value="/lolo/ctrl/rollrate_setpoint" />
+  </node>
+
+  <node name="lolo_rollrate_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="0.35" />
+    <param name="meassurement_topic" value="/lolo/dr/rollrate" />
+    <param name="setpoint_topic" value="/lolo/ctrl/rollrate_setpoint" />
+    <param name="output_topic" value="/lolo/ctrl/roll_actuation" />
+  </node>
+
+    <!-- depth+pitch+pitchrate controllers-->
+  <node name="lolo_depth_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="0.7" />
+    <param name="meassurement_topic" value="/lolo/dr/depth" />
+    <param name="setpoint_topic" value="/lolo/ctrl/depth_setpoint" />
+    <param name="output_topic" value="/lolo/ctrl/pitch_setpoint" />
+  </node>
+
+  <node name="lolo_pitch_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="0.7" />
+    <param name="meassurement_topic" value="/lolo/dr/pitch" />
+    <param name="setpoint_topic" value="/lolo/ctrl/pitch_setpoint" />
+    <param name="output_topic" value="/lolo/ctrl/pitchrate_setpoint" />
+  </node>
+
+  <node name="lolo_pitchrate_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+    <param name="p_gain" value="1" />
+    <param name="i_gain" value="0" />
+    <param name="d_gain" value="0" />
+    <param name="output_limit" value="0.2" />
+    <param name="meassurement_topic" value="/lolo/dr/pitchrate" />
+    <param name="setpoint_topic" value="/lolo/ctrl/pitchrate_setpoint" />
+    <param name="output_topic" value="/lolo/ctrl/pitch_actuation" />
+  </node>
+
+  <node name="tester" pkg="lolo_controllers" type="pid_test3.py" output="screen" ns = "/lolo/ctrl" >
+  </node>
+
+</launch>
