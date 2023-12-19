@@ -67,9 +67,15 @@ class INSDr(object):
         self.latlon_pub = rospy.Publisher(topic_root+"lat_lon", GeoPoint, queue_size=1)
         self.depth_pub = rospy.Publisher(topic_root+"depth", Float64, queue_size=1)
         self.roll_pub = rospy.Publisher(topic_root+"roll", Float64, queue_size=1)
+        self.rollrate_pub = rospy.Publisher(topic_root+"rollrate", Float64, queue_size=1)
         self.pitch_pub = rospy.Publisher(topic_root+"pitch", Float64, queue_size=1)
+        self.pitchrate_pub = rospy.Publisher(topic_root+"pitchrate", Float64, queue_size=1)
         self.yaw_pub = rospy.Publisher(topic_root+"yaw", Float64, queue_size=1)
+        self.yawrate_pub = rospy.Publisher(topic_root+"yawrate", Float64, queue_size=1)
         self.twist_pub = rospy.Publisher(topic_root+"twist", Twist, queue_size=1)
+        self.surge_pub = rospy.Publisher(topic_root+"surge", Float64, queue_size=1)
+        self.sway_pub = rospy.Publisher(topic_root+"sway", Float64, queue_size=1)
+        self.heave_pub = rospy.Publisher(topic_root+"heave", Float64, queue_size=1)
 
         latlontoutm_service_name = topic_root + latlontoutm_service_name
 
@@ -98,9 +104,14 @@ class INSDr(object):
         self.tflistener = tf.TransformListener()
 
     def imu_cb(self,msg):
+        #Store angular rates for twist message
         self.twist_msg.angular.x = msg.angular_velocity.x
         self.twist_msg.angular.y = msg.angular_velocity.y
         self.twist_msg.angular.z = msg.angular_velocity.z
+        #publish angular rate messages
+        self.rollrate_pub.publish(msg.angular_velocity.x)
+        self.pitchrate_pub.publish(msg.angular_velocity.z)
+        self.yawrate_pub.publish(msg.angular_velocity.y)
 
     def ins_cb(self, msg):
 
@@ -113,12 +124,15 @@ class INSDr(object):
         ll.latitude = msg.latitude
         ll.longitude = msg.longitude
         ll.altitude = msg.altitude
+
         self.latlon_pub.publish(ll)
         self.depth_pub.publish(-msg.altitude)
         self.roll_pub.publish(msg.roll)
         self.pitch_pub.publish(msg.pitch)
         self.yaw_pub.publish(msg.heading)
-
+        self.surge_pub.publish(msg.speed_vessel_frame.x)
+        self.sway_pub.publish(msg.speed_vessel_frame.y)
+        self.heave_pub.publish(msg.speed_vessel_frame.z)
         self.twist_msg.linear = msg.speed_vessel_frame
         self.twist_pub.publish(self.twist_msg)
 
