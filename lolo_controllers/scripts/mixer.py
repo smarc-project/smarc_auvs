@@ -104,10 +104,10 @@ class control_mixer(object):
         if(elevon_strb is not None): self.elevon_strb_pub.publish(elevon_strb)
 
         #Thrusters 1: scale the values added by the yaw controller based on vehicle speed
-        fadeout_scaling = 0
+        fadeout_scaling = 1
         if self.lastsurge_time is not None and now - self.lastsurge_time < 1:
             if self.vehicle_surge is not None and self.vehicle_surge < 1:
-                #fadeout_scaling = 0
+                fadeout_scaling = 0
                 pass
         if thruster_port is not None:
             thruster_port *= fadeout_scaling
@@ -134,7 +134,6 @@ class control_mixer(object):
 if __name__ == '__main__':
     rospy.init_node("contol_mixer")
     update_rate = float(rospy.get_param("~update_rate", 10))
-    output_limit = float(rospy.get_param("~output_limit", 0))
     
     mixer =control_mixer()
 

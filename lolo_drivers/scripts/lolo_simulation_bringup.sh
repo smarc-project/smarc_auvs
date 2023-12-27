@@ -97,11 +97,14 @@ tmux send-keys "sleep 5; mon launch lolo_stonefish_sim robot_bridge.launch robot
 tmux new-window -n 'tf'
 tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND map_origin_north:=$ORIGIN_OFFSET_NORTH map_origin_east:=$ORIGIN_OFFSET_EAST captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
-tmux new-window -n 'action'
-tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
+tmux new-window -n 'control'
+tmux send-keys "sleep 5; roslaunch lolo_controllers control.launch" C-m
 
-tmux new-window -n 'bt'
-tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo"
+#tmux new-window -n 'action'
+#tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
+
+#tmux new-window -n 'bt'
+#tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo"
 
 #tmux new-window -n 'mbes_node'
 #tmux send-keys "sleep 5; roslaunch r2sonic_mbes r2sonic_mbes.launch" C-m

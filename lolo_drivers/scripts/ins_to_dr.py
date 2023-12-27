@@ -110,8 +110,8 @@ class INSDr(object):
         self.twist_msg.angular.z = msg.angular_velocity.z
         #publish angular rate messages
         self.rollrate_pub.publish(msg.angular_velocity.x)
-        self.pitchrate_pub.publish(msg.angular_velocity.z)
-        self.yawrate_pub.publish(msg.angular_velocity.y)
+        self.pitchrate_pub.publish(msg.angular_velocity.y)
+        self.yawrate_pub.publish(msg.angular_velocity.z)
 
     def ins_cb(self, msg):
 

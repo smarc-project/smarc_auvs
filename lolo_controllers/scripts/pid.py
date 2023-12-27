@@ -90,18 +90,18 @@ class PID_wrapper(object):
         #print("wrapper update")
         now = rospy.get_time()
         if(now - self.meassurement_time < 1 and now - self.setpoint_time < 1):
-            if self.version == 'Yaw':
+            if self.version == 'yaw':
                 setpoint = np.array([np.cos(self.setpoint) , np.sin(self.setpoint)])
                 meassurement = np.array([np.cos(self.meassurement) , np.sin(self.meassurement)])
-                error = geom.vec2_directed_angle(setpoint, meassurement)
-                print("Yaw controller update")
+                error = -geom.vec2_directed_angle(setpoint, meassurement)
+                #print("Yaw controller update")
             else:
                 error = self.setpoint - self.meassurement
             output = self.pid.update_error(error)
             self.output_pub.publish(output)
         else:
-            pass
             print("setpoint or meassurement timout")
+            #pass
 
 
 if __name__ == '__main__':
