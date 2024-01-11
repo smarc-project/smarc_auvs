@@ -9,12 +9,11 @@ class USBL:
         self.message = ""
 
     def callback(self, msg):
-        #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-        #msg = str(data.data)
-        self.message += chr(msg.data)
-        if(self.message[-1] == '\n'):
-            sys.stdout.write(self.message)
-            self.message = ""
+        sys.stdout.write(chr(msg.data))
+        #self.message += chr(msg.data)
+        #if(self.message[-1] == '\n'):
+        #    sys.stdout.write(self.message)
+        #    self.message = ""
 
 
 def main():
@@ -23,7 +22,7 @@ def main():
 
     rospy.init_node('USBL_output', anonymous=True)
 
-    rospy.Subscriber('/lolo/core/usbl_received', Char, aa.callback)
+    rospy.Subscriber('/lolo/core/usbl/received', Char, aa.callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

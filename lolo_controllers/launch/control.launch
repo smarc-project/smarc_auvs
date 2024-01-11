@@ -58,7 +58,7 @@
     <param name="output_topic" value="/lolo/ctrl/pitch_setpoint" />
   </node>
 
-  <node name="lolo_pitch_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
+  <node name="a" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
     <param name="p_gain" value="0.5" />
     <param name="i_gain" value="0.1" />
     <param name="d_gain" value="0" />

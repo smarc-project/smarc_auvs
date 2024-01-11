@@ -106,8 +106,9 @@ class control_mixer(object):
         #Thrusters 1: scale the values added by the yaw controller based on vehicle speed
         fadeout_scaling = 1
         if self.lastsurge_time is not None and now - self.lastsurge_time < 1:
-            if self.vehicle_surge is not None and self.vehicle_surge < 1:
-                fadeout_scaling = 0
+            if self.vehicle_surge is not None and abs(self.vehicle_surge) < 1:
+                fadeout_scaling = 1 - abs(self.vehicle_surge)
+                fadeout_scaling = max(0, min(1, fadeout_scaling))
                 pass
         if thruster_port is not None:
             thruster_port *= fadeout_scaling

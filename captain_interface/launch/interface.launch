@@ -12,7 +12,7 @@
     <!-- <node pkg="captain_interface" type="captain_services.py" name="captain_toggle_services" output="screen"/> -->
 
     <!-- USBL output node -->
-    <node pkg="captain_interface" type="usbl_output.py" name="usbl_output" output="screen" />
+    <!-- <node pkg="captain_interface" type="usbl_output.py" name="usbl_output" output="screen" /> -->
 
     <!-- TODO USBL input node -->
     

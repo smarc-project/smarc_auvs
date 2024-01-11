@@ -10,13 +10,13 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   //information / other things
   heartbeat_sub  = n->subscribe<std_msgs::Empty>("/lolo/core/heartbeat", 1, &RosInterFace::ros_callback_heartbeat, this);
   //done_sub  = n->subscribe<std_msgs::Empty>("/lolo/core/mission_complete", 1, &RosInterFace::ros_callback_done, this);
-  abort_sub  = n->subscribe<std_msgs::Empty>("/lolo/core/abort", 1, &RosInterFace::ros_callback_abort, this);
+  abort_sub  = n->subscribe<std_msgs::Empty>("/lolo/core/abort", 10, &RosInterFace::ros_callback_abort, this);
 
   //ins
   ins_sub = n->subscribe<ixblue_ins_msgs::Ins>("/ixblue_ins_driver/ix/ins", 1, &RosInterFace::ros_callback_ins, this);
 
   //USBL
-  usbl_sub = n->subscribe<std_msgs::Char>("/lolo/core/usbl/transmit", 1, &RosInterFace::ros_callback_usbl_transmit, this);
+  usbl_sub = n->subscribe<std_msgs::Char>("/lolo/core/usbl/transmit", 1024, &RosInterFace::ros_callback_usbl_transmit, this);
 
   /*
   //Control commands: High level
@@ -54,7 +54,7 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   //==================================//
 
   //USBL
-  usbl_pub             = n->advertise<std_msgs::Char>("/lolo/core/usbl/received", 10);
+  usbl_pub             = n->advertise<std_msgs::Char>("/lolo/core/usbl/received", 1024);
 
   // --- Thrusters --- //
   thrusterPort_pub     = n->advertise<smarc_msgs::ThrusterFeedback>("/lolo/core/thruster1_fb", 10);
