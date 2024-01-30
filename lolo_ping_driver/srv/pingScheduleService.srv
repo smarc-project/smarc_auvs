@@ -1,0 +1,3 @@
+int8 PingScheduleRequest
+---
+string PingScheduleResponse
