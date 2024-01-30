@@ -1,0 +1,15 @@
+<launch>
+    <!--Launch file for the node. Runs the main node + rqt reconfig server.-->
+    <arg name="teensy_ip" default="192.168.1.92" />
+    <arg name="teensy_port" default="123" />
+
+    <arg name="cfg_dir" default="$(find teensy_ping_driver)/cfg/" />
+    <arg name="ping_schedules_ini" default="ping_schedules.ini" />
+
+    <node pkg="teensy_ping_driver" type="server.py" name="ping_schedule_service" output="screen">
+      <param name="teensy_port" value="$(arg teensy_port)" type="string" />
+      <param name="teensy_ip" value="$(arg teensy_ip)" />
+      <param name="cfg_dir" value="$(arg cfg_dir)" />
+      <param name="cfg" value="$(arg ping_schedules_ini)" />
+    </node>
+</launch>
