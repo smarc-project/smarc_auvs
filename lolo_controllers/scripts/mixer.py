@@ -95,7 +95,7 @@ class control_mixer(object):
             elevon_strb = self.pitch_gain*elevator_actuation
 
         #roll
-        if self.lastpitch_time is not None and now-self.lastpitch_time < 1:
+        if self.lastroll_time is not None and now-self.lastroll_time < 1:
             if(elevon_port is not None): elevon_port += self.roll_actuation
             else: elevon_port=self.roll_actuation
             if(elevon_port is not None): elevon_strb -= self.roll_actuation
