@@ -100,8 +100,8 @@ tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$U
 tmux new-window -n 'control'
 tmux send-keys "sleep 5; roslaunch lolo_controllers control.launch" C-m
 
-#tmux new-window -n 'action'
-#tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
+tmux new-window -n 'action'
+tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
 
 #tmux new-window -n 'bt'
 #tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo"

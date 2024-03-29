@@ -10,6 +10,8 @@
 <include file= "$(find r2sonic_mbes)/launch/r2sonic_mbes.launch" />
 <!-- <include file= "$(find r2sonic_mbes)/launch/r2sonic_bathy.launch" /> -->
 
-<!-- TODO MBES2 node(s) -->
+<!--  Norbit MBES node(s) -->
+<include file="$(find norbit_wbms_driver)/launch/norbit.launch" />
+<include file="$(find norbit_wbms_driver)/launch/config_server.launch" />
 
 </launch>
