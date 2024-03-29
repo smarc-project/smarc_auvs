@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import rospy
-import teensy_ping_driver.srv
+import lolo_ping_driver.srv
 import rosparam
 import configparser
 import socket
@@ -8,7 +8,7 @@ import socket
 cfg_dir = ""
 cfg = ""
 
-def send_schedule(req: teensy_ping_driver.srv.pingScheduleServiceRequest):
+def send_schedule(req: lolo_ping_driver.srv.pingScheduleServiceRequest):
     cfg_dir = rosparam.get_param(rospy.get_name() + '/cfg_dir')
     cfg = rosparam.get_param(rospy.get_name() + '/cfg')
     ip = rosparam.get_param(rospy.get_name() + '/teensy_ip')
@@ -53,9 +53,9 @@ def send_schedule(req: teensy_ping_driver.srv.pingScheduleServiceRequest):
 
         teensy_response = udp_socket.recv(1024)
         print("Teensy reply: " + str(teensy_response))
-        return teensy_ping_driver.srv.pingScheduleServiceResponse(schedules[req_str])
+        return lolo_ping_driver.srv.pingScheduleServiceResponse(schedules[req_str])
     else: 
-        return teensy_ping_driver.srv.pingScheduleServiceResponse("schedule not found")
+        return lolo_ping_driver.srv.pingScheduleServiceResponse("schedule not found")
 
 def main():
     print("Ping schedule service started")
@@ -63,7 +63,7 @@ def main():
     print(rospy.get_param_names())
     
     rospy.init_node('ping_schedule_server')
-    configServ = rospy.Service('/ping_schedule_service', teensy_ping_driver.srv.pingScheduleService, send_schedule)
+    configServ = rospy.Service('/ping_schedule_service', lolo_ping_driver.srv.pingScheduleService, send_schedule)
     rospy.spin()
 
 if __name__ == "__main__":

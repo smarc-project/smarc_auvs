@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>teensy_ping_driver</name>
+  <name>lolo_ping_driver</name>
   <version>0.0.0</version>
-  <description>The teensy_ping_driver package</description>
+  <description>The lolo_ping_driver package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
