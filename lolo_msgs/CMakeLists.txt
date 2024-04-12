@@ -21,6 +21,10 @@ add_message_files(
   PD0_Fixedleader.msg
   PD0_Variableleader.msg
   PD0_Bottomtrack.msg
+  VescFeedback.msg
+  VolzServo.msg
+  Pressures.msg
+  Temperatures.msg
 )
 
 ## Generate added messages and services with any dependencies listed here

@@ -11,85 +11,145 @@ void RosInterFace::captain_callback_CONTROL() {
 }
 
 void RosInterFace::captain_callback_RUDDER() {
-  uint64_t timestamp    = captain->parse_llong();
-  uint32_t sequence     = captain->parse_long();
+  uint64_t timestamp    = captain->parse_llong(); // timestamp from ISB
   uint64_t sec = timestamp / 1000000;
   uint64_t usec = timestamp % 1000000;
 
-  float target_angle    = captain->parse_float();
-  float current_angle   = captain->parse_float();
+  float target = captain->parse_float();               // actuator target in radians
+  float angle = captain->parse_float();                // actuator angle in radians
+  float voltage = captain->parse_float();              // voltage
+  float current = captain->parse_float();              // current
+  float humidity = captain->parse_float();             // humidity
+  float pcbtemp = captain->parse_float();              // pcbtemp
+  float motortemp = captain->parse_float();            // motortemp
 
+  //Detailed feedback
+  lolo_msgs::VolzServo feedback_msg;
+  feedback_msg.target = target;
+  feedback_msg.angle = angle;
+  feedback_msg.voltage = voltage;
+  feedback_msg.current = current;
+  //feedback_msg.humidity = humidity;
+  feedback_msg.pcbtemp = pcbtemp;
+  feedback_msg.motortemp = motortemp;
+  rudder_feedback_pub.publish(feedback_msg);
+
+  //Simple feedback
   smarc_msgs::FloatStamped angle_message;
-  angle_message.data = current_angle;
+  angle_message.data = angle;
   angle_message.header.stamp = ros::Time(sec,usec*1000);
-  angle_message.header.seq = sequence;
   angle_message.header.frame_id = "lolo/rudder_port";
   rudder_angle_pub.publish(angle_message);
+
 }
 
 void RosInterFace::captain_callback_ELEVATOR() {
-  uint64_t timestamp    = captain->parse_llong();
-  uint32_t sequence     = captain->parse_long();
+  uint64_t timestamp    = captain->parse_llong(); // timestamp from ISB
   uint64_t sec = timestamp / 1000000;
   uint64_t usec = timestamp % 1000000;
 
-  float target_angle    = captain->parse_float();
-  float current_angle   = captain->parse_float();
+  float target = captain->parse_float();               // actuator target in radians
+  float angle = captain->parse_float();                // actuator angle in radians
+  float voltage = captain->parse_float();              // voltage
+  float current = captain->parse_float();              // current
+  float humidity = captain->parse_float();             // humidity
+  float pcbtemp = captain->parse_float();              // pcbtemp
+  float motortemp = captain->parse_float();            // motortemp
 
+  //Detailed feedback
+  lolo_msgs::VolzServo feedback_msg;
+  feedback_msg.target = target;
+  feedback_msg.angle = angle;
+  feedback_msg.voltage = voltage;
+  feedback_msg.current = current;
+  //feedback_msg.humidity = humidity;
+  feedback_msg.pcbtemp = pcbtemp;
+  feedback_msg.motortemp = motortemp;
+  elevator_feedback_pub.publish(feedback_msg);
+  
   smarc_msgs::FloatStamped angle_message;
-  angle_message.data = current_angle;
+  angle_message.data = angle;
   angle_message.header.stamp = ros::Time(sec,usec*1000);
-  angle_message.header.seq = sequence;
   angle_message.header.frame_id = "lolo/elvator";
   elevator_angle_pub.publish(angle_message);
+  
 }
 
 void RosInterFace::captain_callback_ELEVON_PORT() {
-  uint64_t timestamp    = captain->parse_llong();
-  uint32_t sequence     = captain->parse_long();
+  uint64_t timestamp    = captain->parse_llong(); // timestamp from ISB
   uint64_t sec = timestamp / 1000000;
   uint64_t usec = timestamp % 1000000;
 
-  float target_angle    = captain->parse_float();
-  float current_angle   = captain->parse_float();
+  float target = captain->parse_float();               // actuator target in radians
+  float angle = captain->parse_float();                // actuator angle in radians
+  float voltage = captain->parse_float();              // voltage
+  float current = captain->parse_float();              // current
+  float humidity = captain->parse_float();             // humidity
+  float pcbtemp = captain->parse_float();              // pcbtemp
+  float motortemp = captain->parse_float();            // motortemp
+
+  //Detailed feedback
+  lolo_msgs::VolzServo feedback_msg;
+  feedback_msg.target = target;
+  feedback_msg.angle = angle;
+  feedback_msg.voltage = voltage;
+  feedback_msg.current = current;
+  //feedback_msg.humidity = humidity;
+  feedback_msg.pcbtemp = pcbtemp;
+  feedback_msg.motortemp = motortemp;
+  elevon_port_feedback_pub.publish(feedback_msg);
 
   smarc_msgs::FloatStamped angle_message;
-  angle_message.data = current_angle;
+  angle_message.data = angle;
   angle_message.header.stamp = ros::Time(sec,usec*1000);
-  angle_message.header.seq = sequence;
   angle_message.header.frame_id = "lolo/elevon_port";
   elevon_port_angle_pub.publish(angle_message);
 }
 
 void RosInterFace::captain_callback_ELEVON_STRB() {
-  uint64_t timestamp    = captain->parse_llong();
-  uint32_t sequence     = captain->parse_long(); 
+  uint64_t timestamp    = captain->parse_llong(); // timestamp from ISB
   uint64_t sec = timestamp / 1000000;
   uint64_t usec = timestamp % 1000000;
 
-  float target_angle    = captain->parse_float();
-  float current_angle   = captain->parse_float();
+  float target = captain->parse_float();               // actuator target in radians
+  float angle = captain->parse_float();                // actuator angle in radians
+  float voltage = captain->parse_float();              // voltage
+  float current = captain->parse_float();              // current
+  float humidity = captain->parse_float();             // humidity
+  float pcbtemp = captain->parse_float();              // pcbtemp
+  float motortemp = captain->parse_float();            // motortemp
+
+  //Detailed feedback
+  lolo_msgs::VolzServo feedback_msg;
+  feedback_msg.target = target;
+  feedback_msg.angle = angle;
+  feedback_msg.voltage = voltage;
+  feedback_msg.current = current;
+  //feedback_msg.humidity = humidity;
+  feedback_msg.pcbtemp = pcbtemp;
+  feedback_msg.motortemp = motortemp;
+  elevon_strb_feedback_pub.publish(feedback_msg);
 
   smarc_msgs::FloatStamped angle_message;
-  angle_message.data = current_angle;
+  angle_message.data = angle;
   angle_message.header.stamp = ros::Time(sec,usec*1000);
-  angle_message.header.seq = sequence;
   angle_message.header.frame_id = "lolo/elevon_stbd";
   elevon_strb_angle_pub.publish(angle_message);
 }
 
 void RosInterFace::captain_callback_THRUSTER_PORT() {
-  uint64_t timestamp    = captain->parse_llong();
-  uint32_t sequence     = captain->parse_long();
-  uint64_t sec = timestamp / 1000000;
-  uint64_t usec = timestamp % 1000000;
-
-  float rpm_setpoint    = captain->parse_float();
+  uint64_t timestamp    = captain->parse_llong(); //timestamp from ISB
+  uint32_t sequence     = captain->parse_long();  //sequence of this message
+      
+  float target          = captain->parse_float();
   float rpm             = captain->parse_float();
   float input_current   = captain->parse_float();
   float input_voltage   = captain->parse_float();
   float motor_current   = captain->parse_float();
-  float esc_temp        = captain->parse_float();
+  float tempMosfet      = captain->parse_float();
+
+  uint64_t sec = timestamp / 1000000;
+  uint64_t usec = timestamp % 1000000;
 
   smarc_msgs::ThrusterFeedback thruster_msg;
   thruster_msg.header.stamp = ros::Time(sec,usec*1000);
@@ -99,20 +159,31 @@ void RosInterFace::captain_callback_THRUSTER_PORT() {
   thruster_msg.current = input_current;
   thruster_msg.torque = motor_current;
   thrusterPort_pub.publish(thruster_msg);
+
+  lolo_msgs::VescFeedback vesc_feedback_msg;
+  vesc_feedback_msg.target_rpm = target;
+  vesc_feedback_msg.rpm = rpm;
+  vesc_feedback_msg.input_current = input_current;
+  vesc_feedback_msg.input_voltage = input_voltage;
+  vesc_feedback_msg.motor_current = motor_current;
+  vesc_feedback_msg.tempMosfet = tempMosfet;
+  
+  thrusterPortFeedback_pub.publish(vesc_feedback_msg);
 }
 
 void RosInterFace::captain_callback_THRUSTER_STRB() {
-  uint64_t timestamp    = captain->parse_llong();
-  uint32_t sequence     = captain->parse_long();
-  uint64_t sec = timestamp / 1000000;
-  uint64_t usec = timestamp % 1000000;
-
-  float rpm_setpoint    = captain->parse_float();
+  uint64_t timestamp    = captain->parse_llong(); //timestamp from ISB
+  uint32_t sequence     = captain->parse_long();  //sequence of this message
+      
+  float target          = captain->parse_float();
   float rpm             = captain->parse_float();
   float input_current   = captain->parse_float();
   float input_voltage   = captain->parse_float();
   float motor_current   = captain->parse_float();
-  float esc_temp        = captain->parse_float();
+  float tempMosfet      = captain->parse_float();
+
+  uint64_t sec = timestamp / 1000000;
+  uint64_t usec = timestamp % 1000000;
   
   smarc_msgs::ThrusterFeedback thruster_msg;
   thruster_msg.header.stamp = ros::Time(sec,usec*1000);
@@ -122,11 +193,49 @@ void RosInterFace::captain_callback_THRUSTER_STRB() {
   thruster_msg.current = input_current;
   thruster_msg.torque = motor_current;
   thrusterStrb_pub.publish(thruster_msg);
+
+  lolo_msgs::VescFeedback vesc_feedback_msg;
+  vesc_feedback_msg.target_rpm = target;
+  vesc_feedback_msg.rpm = rpm;
+  vesc_feedback_msg.input_current = input_current;
+  vesc_feedback_msg.input_voltage = input_voltage;
+  vesc_feedback_msg.motor_current = motor_current;
+  vesc_feedback_msg.tempMosfet = tempMosfet;
+  
+  thrusterStrbFeedback_pub.publish(vesc_feedback_msg);
 }
 
-void RosInterFace::captain_callback_BATTERY() {
+void RosInterFace::captain_callback_VERTICAL_THRUSTER(int thruster_id) {
+  uint64_t timestamp    = captain->parse_llong(); //timestamp from ISB    
+  float target          = captain->parse_float();
+  float rpm             = captain->parse_float();
+  float input_current   = captain->parse_float();
+  float input_voltage   = captain->parse_float();
+  float motor_current   = captain->parse_float();
+  float tempMosfet      = captain->parse_float();
+  
+  lolo_msgs::VescFeedback vesc_feedback_msg;
+  vesc_feedback_msg.target_rpm = target;
+  vesc_feedback_msg.rpm = rpm;
+  vesc_feedback_msg.input_current = input_current;
+  vesc_feedback_msg.input_voltage = input_voltage;
+  vesc_feedback_msg.motor_current = motor_current;
+  vesc_feedback_msg.tempMosfet = tempMosfet;
+  switch (thruster_id)
+  {
+    case CS_VTHRUSTER_1: vertical_thruster_1_Feedback_pub.publish(vesc_feedback_msg); break;
+    case CS_VTHRUSTER_2: vertical_thruster_2_Feedback_pub.publish(vesc_feedback_msg); break;
+    case CS_VTHRUSTER_3: vertical_thruster_3_Feedback_pub.publish(vesc_feedback_msg); break;
+    case CS_VTHRUSTER_4: vertical_thruster_4_Feedback_pub.publish(vesc_feedback_msg); break;  
+  default:
+    break;
+  }
+  thrusterStrbFeedback_pub.publish(vesc_feedback_msg);
+}
+
+void RosInterFace::captain_callback_BATTERY(int id) {
   // parse and publish battery information
-  uint8_t battery_state = captain->parse_byte(); //Battery state. Chech ros message doc for definition
+  uint8_t battery_state = captain->parse_byte(); //Battery state. Check ros message doc for definition
   float BatteryVoltage  = captain->parse_float();
   float BatteryCurrent  = captain->parse_float();
   float SOC             = captain->parse_float();
@@ -146,8 +255,7 @@ void RosInterFace::captain_callback_BATTERY() {
   float temp4           = captain->parse_float();
   float temp5           = captain->parse_float();
 
-  sensor_msgs::BatteryState battery_msg;
-  
+  sensor_msgs::BatteryState battery_msg;  
   //std_msgs/Header header
   battery_msg.voltage = BatteryVoltage;
   battery_msg.current = BatteryCurrent;
@@ -169,9 +277,19 @@ void RosInterFace::captain_callback_BATTERY() {
   battery_msg.cell_voltage.push_back(CellVoltage_7);
   battery_msg.cell_voltage.push_back(CellVoltage_8);
   battery_msg.cell_voltage.push_back(CellVoltage_9);
-  battery_msg.location = "Starboard battery";
-  battery_pub.publish(battery_msg);
-
+  switch (id)
+  {
+    case CS_BATTERY1: 
+      battery_msg.location = "Port battery";
+      battery1_pub.publish(battery_msg); 
+      break;
+    case CS_BATTERY2: 
+      battery_msg.location = "strb battery";
+      battery2_pub.publish(battery_msg); 
+      break;
+  default:
+    break;
+  }
 }
 
 void RosInterFace::captain_callback_CTRL_STATUS() {
@@ -286,116 +404,57 @@ void RosInterFace::captain_callback_USBL_RECEIVED() {
 
 void RosInterFace::captain_callback_TEMP() 
 {
-  float temperature_cap_cpu = captain->parse_float();
-  float temperature_time_cpu = captain->parse_float();
-  float temperature_cap_sensor1 = captain->parse_float();
-  float temperature_cap_sensor2 = captain->parse_float();
-  float temperature_cap_sensor3 = captain->parse_float();
-  float temperature_isb_usbl = captain->parse_float();
-  //float temperature_isb_4G = captain->parse_float();
-  //float temperature_isb_ethernet = captain->parse_float();
-  float temperature_isb_strobe = captain->parse_float();
-  //float temperature_isb_wifi = captain->parse_float();
-  float temperature_isb_rudders = captain->parse_float();
-  float temperature_isb_elevons = captain->parse_float();
-  float temperature_isb_elevator = captain->parse_float();
-  float temperature_isb_thruster = captain->parse_float();
-  float temperature_isb_scientist = captain->parse_float();
-  float temperature_isb_edw = captain->parse_float();
-  float temperature_isb_battery = captain->parse_float();
-  float temperature_battery_sensor1 = captain->parse_float();
-  float temperature_battery_sensor2 = captain->parse_float();
-  float temperature_battery_sensor3 = captain->parse_float();
-  float temperature_battery_sensor4 = captain->parse_float();
-  float temperature_battery_sensor5 = captain->parse_float();
-
-  std_msgs::Float32 temperature_cap_cpu_msg; temperature_cap_cpu_msg.data = temperature_cap_cpu;
-  std_msgs::Float32 temperature_time_cpu_msg; temperature_time_cpu_msg.data = temperature_time_cpu;
-  std_msgs::Float32 temperature_cap_sensor1_msg; temperature_cap_sensor1_msg.data = temperature_cap_sensor1;
-  std_msgs::Float32 temperature_cap_sensor2_msg; temperature_cap_sensor2_msg.data = temperature_cap_sensor2;
-  std_msgs::Float32 temperature_cap_sensor3_msg; temperature_cap_sensor3_msg.data = temperature_cap_sensor3;
-  std_msgs::Float32 temperature_isb_usbl_msg; temperature_isb_usbl_msg.data = temperature_isb_usbl;
-  //std_msgs::Float32 temperature_isb_4G_msg; temperature_isb_4G_msg.data = temperature_isb_4G;
-  //std_msgs::Float32 temperature_isb_ethernet_msg; temperature_isb_ethernet_msg.data = temperature_isb_ethernet;
-  std_msgs::Float32 temperature_isb_strobe_msg; temperature_isb_strobe_msg.data = temperature_isb_strobe;
-  //std_msgs::Float32 temperature_isb_wifi_msg; temperature_isb_wifi_msg.data = temperature_isb_wifi;
-  std_msgs::Float32 temperature_isb_rudders_msg; temperature_isb_rudders_msg.data = temperature_isb_rudders;
-  std_msgs::Float32 temperature_isb_elevons_msg; temperature_isb_elevons_msg.data = temperature_isb_elevons;
-  std_msgs::Float32 temperature_isb_elevator_msg; temperature_isb_elevator_msg.data = temperature_isb_elevator;
-  std_msgs::Float32 temperature_isb_thruster_msg; temperature_isb_thruster_msg.data = temperature_isb_thruster;
-  std_msgs::Float32 temperature_isb_scientist_msg; temperature_isb_scientist_msg.data = temperature_isb_scientist;
-  std_msgs::Float32 temperature_isb_edw_msg; temperature_isb_edw_msg.data = temperature_isb_edw;
-  std_msgs::Float32 temperature_isb_battery_msg; temperature_isb_battery_msg.data = temperature_isb_battery;
-  std_msgs::Float32 temperature_battery_sensor1_msg; temperature_battery_sensor1_msg.data = temperature_battery_sensor1;
-  std_msgs::Float32 temperature_battery_sensor2_msg; temperature_battery_sensor2_msg.data = temperature_battery_sensor2;
-  std_msgs::Float32 temperature_battery_sensor3_msg; temperature_battery_sensor3_msg.data = temperature_battery_sensor3;
-  std_msgs::Float32 temperature_battery_sensor4_msg; temperature_battery_sensor4_msg.data = temperature_battery_sensor4;
-  std_msgs::Float32 temperature_battery_sensor5_msg; temperature_battery_sensor5_msg.data = temperature_battery_sensor5;
-  
-  temperature_cap_cpu_pub.publish(temperature_cap_cpu_msg);
-  temperature_time_cpu_pub.publish(temperature_time_cpu_msg);
-  temperature_cap_sensor1_pub.publish(temperature_cap_sensor1_msg);
-  temperature_cap_sensor2_pub.publish(temperature_cap_sensor2_msg);
-  temperature_cap_sensor3_pub.publish(temperature_cap_sensor3_msg);
-  temperature_isb_usbl_pub.publish(temperature_isb_usbl_msg);
-  //temperature_isb_4G_pub.publish(temperature_isb_4G_msg);
-  //temperature_isb_ethernet_pub.publish(temperature_isb_ethernet_msg);
-  temperature_isb_strobe_pub.publish(temperature_isb_strobe_msg);
-  //temperature_isb_wifi_pub.publish(temperature_isb_wifi_msg);
-  temperature_isb_rudders_pub.publish(temperature_isb_rudders_msg);
-  temperature_isb_elevons_pub.publish(temperature_isb_elevons_msg);
-  temperature_isb_elevator_pub.publish(temperature_isb_elevator_msg);
-  temperature_isb_thruster_pub.publish(temperature_isb_thruster_msg);
-  temperature_isb_scientist_pub.publish(temperature_isb_scientist_msg);
-  temperature_isb_edw_pub.publish(temperature_isb_edw_msg);
-  temperature_isb_battery_pub.publish(temperature_isb_battery_msg);
-  temperature_battery_sensor1_pub.publish(temperature_battery_sensor1_msg);
-  temperature_battery_sensor2_pub.publish(temperature_battery_sensor2_msg);
-  temperature_battery_sensor3_pub.publish(temperature_battery_sensor3_msg);
-  temperature_battery_sensor4_pub.publish(temperature_battery_sensor4_msg);
-  temperature_battery_sensor5_pub.publish(temperature_battery_sensor5_msg);
+  lolo_msgs::Temperatures temperature_msg;
+  temperature_msg.captain_cpu = captain->parse_byte();
+  temperature_msg.time_cpu = captain->parse_byte();
+  temperature_msg.captain_top = captain->parse_byte();
+  temperature_msg.captain_eth = captain->parse_byte();
+  temperature_msg.captain_nuc = captain->parse_byte();
+  temperature_msg.usbl_isb = captain->parse_byte();
+  temperature_msg.actuator_cpu = captain->parse_byte();
+  temperature_msg.elevator_pcb = captain->parse_byte();
+  temperature_msg.elevator_motor = captain->parse_byte();
+  temperature_msg.rudder_motor = captain->parse_byte();
+  temperature_msg.rudder_pcb = captain->parse_byte();
+  temperature_msg.elevon_port_motor = captain->parse_byte();
+  temperature_msg.elevon_port_pcb = captain->parse_byte();
+  temperature_msg.elevon_strb_motor = captain->parse_byte();
+  temperature_msg.elevon_strb_pcb = captain->parse_byte();
+  temperature_msg.thruster_isb = captain->parse_byte();
+  temperature_msg.port_esc = captain->parse_byte();
+  temperature_msg.strb_esc = captain->parse_byte();
+  temperature_msg.vertical_thruster_isb = captain->parse_byte();
+  temperature_msg.vertical_thruster_1_esc = captain->parse_byte();
+  temperature_msg.vertical_thruster_2_esc = captain->parse_byte();
+  temperature_msg.vertical_thruster_3_esc = captain->parse_byte();
+  temperature_msg.vertical_thruster_4_es = captain->parse_byte();
+  temperature_msg.prevco_isb = captain->parse_byte();
+  temperature_msg.edw_isb = captain->parse_byte();
+  temperature_msg.battery1_isb = captain->parse_byte();
+  temperature_msg.battery1_temp1 = captain->parse_byte();
+  temperature_msg.battery1_temp2 = captain->parse_byte();
+  temperature_msg.battery1_temp3 = captain->parse_byte();
+  temperature_msg.battery1_temp4 = captain->parse_byte();
+  temperature_msg.battery1_temp5 = captain->parse_byte();
+  temperature_msg.battery2_isb = captain->parse_byte();
+  temperature_msg.battery2_temp1 = captain->parse_byte();
+  temperature_msg.battery2_temp2 = captain->parse_byte();
+  temperature_msg.battery2_temp3 = captain->parse_byte();
+  temperature_msg.battery2_temp4 = captain->parse_byte();
+  temperature_msg.battery2_temp5 = captain->parse_byte();
+  temperature_pub.publish(temperature_msg);
 }
 
 void RosInterFace::captain_callback_BARO() {
 
-  float pressure_isb_usbl = captain->parse_float();
-  //float pressure_isb_4G = captain->parse_float();
-  //float pressure_isb_ethernet = captain->parse_float();
-  float pressure_isb_strobe = captain->parse_float();
-  //float pressure_isb_wifi = captain->parse_float();
-  float pressure_isb_rudders = captain->parse_float();
-  float pressure_isb_elevons = captain->parse_float();
-  float pressure_isb_elevator = captain->parse_float();
-  float pressure_isb_thruster = captain->parse_float();
-  float pressure_isb_scientist = captain->parse_float();
-  float pressure_isb_edw = captain->parse_float();
-  float pressure_isb_battery = captain->parse_float();
-
-
-  std_msgs::Float32 pressure_isb_usbl_msg; pressure_isb_usbl_msg.data = pressure_isb_usbl;
-  //std_msgs::Float32 pressure_isb_4G_msg; pressure_isb_4G_msg.data = pressure_isb_4G;
-  //std_msgs::Float32 pressure_isb_ethernet_msg; pressure_isb_ethernet_msg.data = pressure_isb_ethernet;
-  std_msgs::Float32 pressure_isb_strobe_msg; pressure_isb_strobe_msg.data = pressure_isb_strobe;
-  //std_msgs::Float32 pressure_isb_wifi_msg; pressure_isb_wifi_msg.data = pressure_isb_wifi;
-  std_msgs::Float32 pressure_isb_rudders_msg; pressure_isb_rudders_msg.data = pressure_isb_rudders;
-  std_msgs::Float32 pressure_isb_elevons_msg; pressure_isb_elevons_msg.data = pressure_isb_elevons;
-  std_msgs::Float32 pressure_isb_elevator_msg; pressure_isb_elevator_msg.data = pressure_isb_elevator;
-  std_msgs::Float32 pressure_isb_thruster_msg; pressure_isb_thruster_msg.data = pressure_isb_thruster;
-  std_msgs::Float32 pressure_isb_scientist_msg; pressure_isb_scientist_msg.data = pressure_isb_scientist;
-  std_msgs::Float32 pressure_isb_edw_msg; pressure_isb_edw_msg.data = pressure_isb_edw;
-  std_msgs::Float32 pressure_isb_battery_msg; pressure_isb_battery_msg.data = pressure_isb_battery;
-
-  pressure_isb_usbl_pub.publish(pressure_isb_usbl_msg);
-  //pressure_isb_4G_pub.publish(pressure_isb_4G_msg);
-  //pressure_isb_ethernet_pub.publish(pressure_isb_ethernet_msg);
-  pressure_isb_strobe_pub.publish(pressure_isb_strobe_msg);
-  //pressure_isb_wifi_pub.publish(pressure_isb_wifi_msg);
-  pressure_isb_rudders_pub.publish(pressure_isb_rudders_msg);
-  pressure_isb_elevons_pub.publish(pressure_isb_elevons_msg);
-  pressure_isb_elevator_pub.publish(pressure_isb_elevator_msg);
-  pressure_isb_thruster_pub.publish(pressure_isb_thruster_msg);
-  pressure_isb_scientist_pub.publish(pressure_isb_scientist_msg);
-  pressure_isb_edw_pub.publish(pressure_isb_edw_msg);
-  pressure_isb_battery_pub.publish(pressure_isb_battery_msg);
+    lolo_msgs::Pressures pressure_msg;
+    pressure_msg.usbl_isb = captain->parse_float();
+    pressure_msg.thrusters_isb = captain->parse_float();
+    pressure_msg.vertical_thrusters_isb  = captain->parse_float();
+    pressure_msg.prevco_isb = captain->parse_float();
+    pressure_msg.edw_isb = captain->parse_float();
+    pressure_msg.battery1_isb = captain->parse_float();
+    pressure_msg.battery2_isb = captain->parse_float();
+    pressure_pub.publish(pressure_msg);
 }
 

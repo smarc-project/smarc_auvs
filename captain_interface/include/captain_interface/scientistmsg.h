@@ -8,8 +8,8 @@
 #ifndef captainscientistmessages
 #define captainscientistmessages
 
-//V1.2
-//2023 11 06
+//V1.3
+//2024 04 12
 
 //CAPTAIN -> SCIENTIST
 #define CS_LEAK             7
@@ -19,7 +19,14 @@
 #define CS_ELEVATOR         12
 #define CS_THRUSTER_PORT    13
 #define CS_THRUSTER_STRB    14
-#define CS_BATTERY          15
+
+#define CS_VTHRUSTER_1      61
+#define CS_VTHRUSTER_2      62
+#define CS_VTHRUSTER_3      63
+#define CS_VTHRUSTER_4      64
+
+#define CS_BATTERY1         15
+#define CS_BATTERY2         55
 #define CS_TEMP             16 //Internal temperatures
 #define CS_BARO             17 //Internal pressures
 

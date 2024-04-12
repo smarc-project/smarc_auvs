@@ -70,49 +70,30 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   elevon_port_angle_pub   = n->advertise<smarc_msgs::FloatStamped>("/lolo/core/elevon_port_fb", 10);
   elevon_strb_angle_pub   = n->advertise<smarc_msgs::FloatStamped>("/lolo/core/elevon_strb_fb", 10);
 
+  // More detailed feedback for diagnostics
+  thrusterPortFeedback_pub          = n->advertise<lolo_msgs::VescFeedback>("/lolo/system/thruster_port",10);
+  thrusterStrbFeedback_pub          = n->advertise<lolo_msgs::VescFeedback>("/lolo/system/thruster_strb",10);
+  vertical_thruster_1_Feedback_pub  = n->advertise<lolo_msgs::VescFeedback>("/lolo/system/vertical_thruster_1",10);
+  vertical_thruster_2_Feedback_pub  = n->advertise<lolo_msgs::VescFeedback>("/lolo/system/vertical_thruster_2",10);
+  vertical_thruster_3_Feedback_pub  = n->advertise<lolo_msgs::VescFeedback>("/lolo/system/vertical_thruster_3",10);
+  vertical_thruster_4_Feedback_pub  = n->advertise<lolo_msgs::VescFeedback>("/lolo/system/vertical_thruster_4",10);
+  elevator_feedback_pub             = n->advertise<lolo_msgs::VolzServo>("/lolo/system/elevator", 10);
+  rudder_feedback_pub               = n->advertise<lolo_msgs::VolzServo>("/lolo/system/rudder", 10);
+  elevon_port_feedback_pub          = n->advertise<lolo_msgs::VolzServo>("/lolo/system/elevon_port", 10);
+  elevon_strb_feedback_pub          = n->advertise<lolo_msgs::VolzServo>("/lolo/system/elevon_strb", 10);
+
   //Battery
-  battery_pub = n->advertise<sensor_msgs::BatteryState>("/lolo/core/battery",10);
+  battery1_pub = n->advertise<sensor_msgs::BatteryState>("/lolo/core/battery1",10);
+  battery2_pub = n->advertise<sensor_msgs::BatteryState>("/lolo/core/battery2",10);
 
   //Leak sensors
   leak_dome   = n->advertise<smarc_msgs::Leak>("/lolo/core/leak", 10);
 
   //Temperature sensors
-  temperature_cap_cpu_pub          = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_cpu",  1);
-  temperature_time_cpu_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/time_cpu", 1);
-  temperature_cap_sensor1_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor1", 1);
-  temperature_cap_sensor2_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor2", 1);
-  temperature_cap_sensor3_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/cap_sensor3", 1);
-  temperature_isb_usbl_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_usbl", 1);
-  //temperature_isb_4G_pub           = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_4G", 1);
-  //temperature_isb_ethernet_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_ethernet", 1);
-  temperature_isb_strobe_pub       = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_strobe", 1);
-  //temperature_isb_wifi_pub         = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_wifi", 1);
-  temperature_isb_rudders_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_rudders",  1);
-  temperature_isb_elevons_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_rlevons",  1);
-  temperature_isb_elevator_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_elevator", 1);
-  temperature_isb_thruster_pub     = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_thruster",  1);
-  temperature_isb_scientist_pub    = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_scientist",  1);
-  temperature_isb_edw_pub          = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_edw",  1);
-  temperature_isb_battery_pub      = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/isb_battery",  1);
-  temperature_battery_sensor1_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor1",  1);
-  temperature_battery_sensor2_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor2",  1);
-  temperature_battery_sensor3_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor3",  1);
-  temperature_battery_sensor4_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor4",  1);
-  temperature_battery_sensor5_pub  = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/temperature/battery_sensor5",  1);
+  temperature_pub = n->advertise<lolo_msgs::Temperatures>("/lolo/system/temperatures", 10);
 
   //pressure sensors
-  pressure_isb_usbl_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_usbl", 1);
-  //pressure_isb_4G_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_4G", 1);
-  //pressure_isb_ethernet_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_ethernet", 1);
-  pressure_isb_strobe_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_strobe", 1);
-  //pressure_isb_wifi_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_wifi", 1);
-  pressure_isb_rudders_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_rudders", 1);
-  pressure_isb_elevons_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_elevons", 1);
-  pressure_isb_elevator_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_elevator", 1);
-  pressure_isb_thruster_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_thruster", 1);
-  pressure_isb_scientist_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_scientist", 1);
-  pressure_isb_edw_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_edw", 1);
-  pressure_isb_battery_pub = n->advertise<std_msgs::Float32>("/lolo/core/diagnostic/pressure/isb_battery", 1);
+  pressure_pub = n->advertise<lolo_msgs::Pressures>("/lolo/system/pressures", 10);
 
   //"Service"
   service_pub             = n->advertise<lolo_msgs::CaptainService>("/lolo/core/captain_srv_out", 10);

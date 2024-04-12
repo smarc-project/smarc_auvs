@@ -44,6 +44,10 @@
 #include <smarc_msgs/ControllerStatus.h>
 #include <smarc_msgs/SensorStatus.h>
 #include <ixblue_ins_msgs/Ins.h>
+#include <lolo_msgs/VescFeedback.h>
+#include <lolo_msgs/VolzServo.h>
+#include <lolo_msgs/Temperatures.h>
+#include <lolo_msgs/Pressures.h>
 
 struct RosInterFace {
 
@@ -117,14 +121,27 @@ struct RosInterFace {
   ros::Publisher thrusterPort_pub;
   ros::Publisher thrusterStrb_pub;
 
+  ros::Publisher thrusterPortFeedback_pub;
+  ros::Publisher thrusterStrbFeedback_pub;
+  ros::Publisher vertical_thruster_1_Feedback_pub;
+  ros::Publisher vertical_thruster_2_Feedback_pub;
+  ros::Publisher vertical_thruster_3_Feedback_pub;
+  ros::Publisher vertical_thruster_4_Feedback_pub;
+
   //constrol surfaces
   ros::Publisher rudder_angle_pub;
   ros::Publisher elevator_angle_pub;
   ros::Publisher elevon_port_angle_pub;
   ros::Publisher elevon_strb_angle_pub;
 
+  ros::Publisher rudder_feedback_pub;
+  ros::Publisher elevator_feedback_pub;
+  ros::Publisher elevon_port_feedback_pub;
+  ros::Publisher elevon_strb_feedback_pub;
+
   //Battery
-  ros::Publisher battery_pub;
+  ros::Publisher battery1_pub;
+  ros::Publisher battery2_pub;
 
   //Leak sensors
   ros::Publisher leak_dome;
@@ -150,43 +167,10 @@ struct RosInterFace {
   ros::Publisher menu_pub;
 
   //Temperature sensor publishers
-  ros::Publisher temperature_cap_cpu_pub;
-  ros::Publisher temperature_time_cpu_pub;
-  ros::Publisher temperature_cap_sensor1_pub;
-  ros::Publisher temperature_cap_sensor2_pub;
-  ros::Publisher temperature_cap_sensor3_pub;
-  ros::Publisher temperature_isb_usbl_pub;
-  //ros::Publisher temperature_isb_4G_pub;
-  //ros::Publisher temperature_isb_ethernet_pub;
-  ros::Publisher temperature_isb_strobe_pub;
-  //ros::Publisher temperature_isb_wifi_pub;
-  ros::Publisher temperature_isb_rudders_pub;
-  ros::Publisher temperature_isb_elevons_pub;
-  ros::Publisher temperature_isb_elevator_pub;
-  ros::Publisher temperature_isb_thruster_pub;
-  ros::Publisher temperature_isb_scientist_pub;
-  ros::Publisher temperature_isb_edw_pub;
-  ros::Publisher temperature_isb_battery_pub;
-  ros::Publisher temperature_battery_sensor1_pub;
-  ros::Publisher temperature_battery_sensor2_pub;
-  ros::Publisher temperature_battery_sensor3_pub;
-  ros::Publisher temperature_battery_sensor4_pub;
-  ros::Publisher temperature_battery_sensor5_pub;
+  ros::Publisher temperature_pub;
 
-  //Pressure sensor publishers
-  ros::Publisher pressure_isb_usbl_pub;
-  //ros::Publisher pressure_isb_4G_pub;
-  //ros::Publisher pressure_isb_ethernet_pub;
-  ros::Publisher pressure_isb_strobe_pub;
-  //ros::Publisher pressure_isb_wifi_pub;
-  ros::Publisher pressure_isb_rudders_pub;
-  ros::Publisher pressure_isb_elevons_pub;
-  ros::Publisher pressure_isb_elevator_pub;
-  ros::Publisher pressure_isb_thruster_pub;
-  ros::Publisher pressure_isb_scientist_pub;
-  ros::Publisher pressure_isb_edw_pub;
-  ros::Publisher pressure_isb_battery_pub;
-
+  //Temperature sensor publishers
+  ros::Publisher pressure_pub;
 
   //Controller status publishers
   ros::Publisher ctrl_status_waypoint_pub;
@@ -246,7 +230,8 @@ struct RosInterFace {
   void captain_callback_ELEVON_STRB();
   void captain_callback_THRUSTER_PORT();
   void captain_callback_THRUSTER_STRB();
-  void captain_callback_BATTERY();
+  void captain_callback_VERTICAL_THRUSTER(int thruster_id);
+  void captain_callback_BATTERY(int id);
   void captain_callback_SERVICE();
   void captain_callback_CTRL_STATUS();
   void captain_callback_TEXT();
@@ -268,7 +253,12 @@ struct RosInterFace {
       case CS_ELEVON_STRB: {  captain_callback_ELEVON_STRB(); } break; //Strb elevon
       case CS_THRUSTER_PORT: {captain_callback_THRUSTER_PORT(); } break; //port thruster
       case CS_THRUSTER_STRB: {captain_callback_THRUSTER_STRB(); } break; //strb thruster
-      case CS_BATTERY: {      captain_callback_BATTERY(); } break; //battery
+      case CS_VTHRUSTER_1:   {captain_callback_VERTICAL_THRUSTER(msgID); } break; //vertical thruster
+      case CS_VTHRUSTER_2:   {captain_callback_VERTICAL_THRUSTER(msgID); } break; //vertical thruster
+      case CS_VTHRUSTER_3:   {captain_callback_VERTICAL_THRUSTER(msgID); } break; //vertical thruster
+      case CS_VTHRUSTER_4:   {captain_callback_VERTICAL_THRUSTER(msgID); } break; //vertical thruster
+      case CS_BATTERY1: {      captain_callback_BATTERY(msgID); } break; //battery1
+      case CS_BATTERY2: {      captain_callback_BATTERY(msgID); } break; //battery2
       case CS_TEXT: {         captain_callback_TEXT(); } break;  //General purpose text message
       case CS_REQUEST_OUT:{   captain_callback_SERVICE(); } break; //"service call"
       case CS_MENUSTREAM: {   captain_callback_MENUSTREAM(); } break; //Menu stream data
