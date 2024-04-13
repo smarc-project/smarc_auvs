@@ -95,6 +95,9 @@ void RosInterFace::init(ros::NodeHandle* nh, CaptainInterFace* cap) {
   //pressure sensors
   pressure_pub = n->advertise<lolo_msgs::Pressures>("/lolo/system/pressures", 10);
 
+  //Status
+  status_pub = n->advertise<lolo_msgs::Status>("/lolo/system/status",10);
+
   //"Service"
   service_pub             = n->advertise<lolo_msgs::CaptainService>("/lolo/core/captain_srv_out", 10);
 

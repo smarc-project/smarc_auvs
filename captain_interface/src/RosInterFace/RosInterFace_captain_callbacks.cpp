@@ -6,8 +6,39 @@ void RosInterFace::captain_callback_LEAK() {
   leak_dome.publish(msg);
 }
 
-void RosInterFace::captain_callback_CONTROL() {
-  //TODO send control feedback information
+void RosInterFace::captain_callback_STATUS() {
+    lolo_msgs::Status status_msg;
+
+    status_msg.rc_signal     =    captain->parse_byte();
+    status_msg.voltage       =    captain->parse_float();    //voltage 
+    status_msg.current       =    captain->parse_float();    //current
+    status_msg.captain_leak  =    captain->parse_byte();     //captain leak sensor
+    status_msg.esc_leak      =    captain->parse_byte();     //esc leak sensor
+    status_msg.prevco_leak   =    captain->parse_byte();     //Prevco leak sensor
+    status_msg.edw_leak      =    captain->parse_byte();     //edw leak sensor
+    status_msg.battery1_leak =    captain->parse_byte();     //battery1 leak sensor
+    status_msg.battery2_leak =    captain->parse_byte();     //battery2 leak sensor
+
+    //ISB status
+    status_msg.time_status                = captain->parse_byte();
+    status_msg.trigger_status             = captain->parse_byte();
+    status_msg.actuators_status           = captain->parse_byte();
+    status_msg.thrusters_status           = captain->parse_byte();
+    status_msg.vertical_thrusters_status  = captain->parse_byte();
+    status_msg.usbl_status                = captain->parse_byte();
+    status_msg.scientist_status           = captain->parse_byte();
+    status_msg.edw_status                 = captain->parse_byte();
+    status_msg.battery1_status            = captain->parse_byte();
+    status_msg.battery2_status            = captain->parse_byte();
+
+    //Aux outputs
+    status_msg.aux_output     = captain->parse_byte();
+    status_msg.servo1_output  = captain->parse_byte();
+    status_msg.servo2_output  = captain->parse_byte();
+    status_msg.lumen_output   = captain->parse_byte();
+    status_msg.mbes_output    = captain->parse_byte();
+
+    status_pub.publish(status_msg);
 }
 
 void RosInterFace::captain_callback_RUDDER() {

@@ -48,6 +48,7 @@
 #include <lolo_msgs/VolzServo.h>
 #include <lolo_msgs/Temperatures.h>
 #include <lolo_msgs/Pressures.h>
+#include <lolo_msgs/Status.h>
 
 struct RosInterFace {
 
@@ -147,15 +148,15 @@ struct RosInterFace {
   ros::Publisher leak_dome;
 
   //control / status
-  ros::Publisher status_orientation_pub;
-  ros::Publisher status_altitude_pub;
-  ros::Publisher status_position_pub;
-  ros::Publisher status_depth_pub;
-  ros::Publisher status_twist_pub;
+  // ros::Publisher status_orientation_pub;
+  // ros::Publisher status_altitude_pub;
+  // ros::Publisher status_position_pub;
+  // ros::Publisher status_depth_pub;
+  // ros::Publisher status_twist_pub;
 
   //Status publishers
-  ros::Publisher control_status_pub;
-  ros::Publisher vehiclestate_pub;
+  ros::Publisher status_pub;
+  //ros::Publisher vehiclestate_pub;
 
   //"Service"
   ros::Publisher service_pub;
@@ -223,7 +224,7 @@ struct RosInterFace {
   //======================================================//
 
   void captain_callback_LEAK();
-  void captain_callback_CONTROL();
+  void captain_callback_STATUS();
   void captain_callback_RUDDER();
   void captain_callback_ELEVATOR();
   void captain_callback_ELEVON_PORT();
@@ -246,7 +247,7 @@ struct RosInterFace {
     int msgID = captain->messageID();
     switch (msgID) {
       case CS_LEAK: {         captain_callback_LEAK(); }; break; //Leak
-      case CS_CONTROL: {      captain_callback_CONTROL(); } break; //control
+      case CS_STATUS: {       captain_callback_STATUS(); } break; //status
       case CS_RUDDER: {       captain_callback_RUDDER(); } break; // rudder
       case CS_ELEVATOR: {     captain_callback_ELEVATOR(); } break; //elevator
       case CS_ELEVON_PORT: {  captain_callback_ELEVON_PORT(); } break; //Port elevon

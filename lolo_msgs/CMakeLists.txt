@@ -14,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  CaptainStatus.msg
+  Status.msg
   CaptainService.msg
   VbsTank.msg
   VbsMode.msg
