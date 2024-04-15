@@ -1,0 +1,9 @@
+string time
+float32 conductivity
+float32 temperature
+float32 pressure
+float32 sea_pressure
+float32 depth
+float32 sailinity
+float32 samples
+float32 temperature_conductivity_correction

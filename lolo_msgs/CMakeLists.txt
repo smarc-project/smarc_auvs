@@ -25,6 +25,7 @@ add_message_files(
   VolzServo.msg
   Pressures.msg
   Temperatures.msg
+  RBR_ctd.msg
 )
 
 ## Generate added messages and services with any dependencies listed here
