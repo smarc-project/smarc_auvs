@@ -7,7 +7,7 @@ import time
 
 def main():
 
-    port_str = '/dev/ttyUSB0'
+    port_str = '/dev/ttyUSB1'
     baud = 115200
 
     rospy.init_node('serial_reader', anonymous=True)

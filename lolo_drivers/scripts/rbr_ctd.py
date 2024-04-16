@@ -49,7 +49,7 @@ class CTDdecoder():
 
 def main():
     
-    decoder = CTDdecoder('/serial_input', "/lolo/system/ctd")
+    decoder = CTDdecoder('/lolo/core/ctd/raw', "/lolo/core/ctd")
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
