@@ -261,7 +261,6 @@ void RosInterFace::captain_callback_VERTICAL_THRUSTER(int thruster_id) {
   default:
     break;
   }
-  thrusterStrbFeedback_pub.publish(vesc_feedback_msg);
 }
 
 void RosInterFace::captain_callback_BATTERY(int id) {
