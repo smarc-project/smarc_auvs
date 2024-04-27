@@ -44,6 +44,9 @@
 
 <!-- TODO DVL node -->
 
-<!-- TODO CTD node -->
+<!-- CTD node -->
+<node name="ctd_reader" type="serial_reader.py" pkg="lolo_drivers" args="" output="screen"/>
+<node name="ctd_parser" type="rbr_ctd.py" pkg="lolo_drivers" args="" output="screen"/>
+
 
 </launch>

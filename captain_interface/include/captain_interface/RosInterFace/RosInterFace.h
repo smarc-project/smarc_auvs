@@ -39,7 +39,7 @@
 #include <smarc_msgs/ThrusterRPM.h>
 #include <smarc_msgs/ThrusterFeedback.h>
 #include <smarc_msgs/Leak.h>
-#include <lolo_msgs/CaptainStatus.h>
+//#include <lolo_msgs/CaptainStatus.h>
 #include <lolo_msgs/CaptainService.h>
 #include <smarc_msgs/ControllerStatus.h>
 #include <smarc_msgs/SensorStatus.h>

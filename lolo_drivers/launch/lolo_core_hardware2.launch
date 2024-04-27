@@ -1,17 +1,70 @@
 <launch>
 
+<!-- Config files -->
+<arg name="norbit_cfg_dir" default="$(find norbit_wbms_driver)/cfg/" />
+<arg name="fls_cfg1" default="fls_default.ini" />
+<arg name="fls_cfg2" default="fls_default.ini" />
+<arg name="fls_cfg3" default="fls_default.ini" />
+<arg name="fls_cfg4" default="fls_default.ini" />
+
+<arg name="wbms_cfg1" default="wbms_default.ini" />
+<arg name="wbms_cfg2" default="wbms_short_range.ini" />
+<arg name="wbms_cfg3" default="wbms_medium_range.ini" />
+<arg name="wbms_cfg4" default="wbms_long_range.ini" />
+
 <arg name="robot_name" default="lolo"/>
 <arg name="LOLO_IP" default="192.168.100" />
-<arg name="FLS_IP" default="192.168.100" />
 
-<!-- TODO FLS node(s) -->
-
-<!-- TODO MBES node(s) -->
+<!-- R2sonic MBES node(s) -->
 <include file= "$(find r2sonic_mbes)/launch/r2sonic_mbes.launch" />
 <!-- <include file= "$(find r2sonic_mbes)/launch/r2sonic_bathy.launch" /> -->
 
+<arg name="wbms_bathymetry_data_port" default="2210" />
+<arg name="wbms_watercolumn_data_port" default="2211" />
+
+<!--  Norbit FLS node(s) -->
+<arg name="fls_sonar_ip" default="192.168.1.89" />
+<node pkg="norbit_wbms_driver" type="wc_parser.py" name="fls_wc_parser" output="screen" ns="/fls">
+    <param name="wbms_sonar_ip" value="$(arg fls_sonar_ip)" />
+    <param name="wbms_watercolumn_data_port" value="$(arg wbms_watercolumn_data_port)" />
+</node>
+
+<node pkg="norbit_wbms_driver" type="wbms_config_server.py" name="fls_config_server" output="screen">
+      <param name="service_topic" value = "/fls_configure" type="string"/>
+      <param name="port" value="2209" type="string" />
+      <param name="ip" value="$(arg fls_sonar_ip)" />
+      <param name="cfg_dir" value="$(arg norbit_cfg_dir)" />
+      <param name="cfg1" value="$(arg fls_cfg1)" />
+      <param name="cfg2" value="$(arg fls_cfg2)" />
+      <param name="cfg3" value="$(arg fls_cfg3)" />
+      <param name="cfg4" value="$(arg fls_cfg4)" />
+</node>
+
+
+
 <!--  Norbit MBES node(s) -->
-<include file="$(find norbit_wbms_driver)/launch/norbit.launch" />
-<include file="$(find norbit_wbms_driver)/launch/config_server.launch" />
+<arg name="mbes_sonar_ip" default="192.168.1.53" />
+<node pkg="norbit_wbms_driver" type="wc_parser.py" name="mbes_mbes_wc_parser" output="screen" ns="/mbes">
+    <param name="wbms_sonar_ip" value="$(arg mbes_sonar_ip)" />
+    <param name="wbms_watercolumn_data_port" value="$(arg wbms_watercolumn_data_port)" />
+</node>
+<node pkg="norbit_wbms_driver" type="bathymetry_parser.py" name="mbes_bathymetry_parser" output="screen" ns="/mbes">
+      <param name="wbms_sonar_ip" value="$(arg mbes_sonar_ip)" />
+      <param name="wbms_bathymetry_data_port" value="$(arg wbms_bathymetry_data_port)" />
+</node>
+
+<node pkg="norbit_wbms_driver" type="bathymetry_to_laser_scan.py" name="bathymetry_to_laserscan" output="screen" ns="/mbes">
+</node>
+
+<node pkg="norbit_wbms_driver" type="wbms_config_server.py" name="mbes_config_server" output="screen">
+      <param name="service_topic" value = "/mbes_configure" type="string"/>
+      <param name="port" value="2209" type="string" />
+      <param name="ip" value="$(arg mbes_sonar_ip)" />
+      <param name="cfg_dir" value="$(arg norbit_cfg_dir)" />
+      <param name="cfg1" value="$(arg wbms_cfg1)" />
+      <param name="cfg2" value="$(arg wbms_cfg2)" />
+      <param name="cfg3" value="$(arg wbms_cfg3)" />
+      <param name="cfg4" value="$(arg wbms_cfg4)" />
+</node>
 
 </launch>

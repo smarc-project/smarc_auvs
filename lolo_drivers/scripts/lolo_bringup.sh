@@ -23,7 +23,7 @@ tmux rename-window "roscore"
 tmux send-keys "roscore" C-m
 
 tmux new-window -n 'Hardware1'
-tmux send-keys "sleep 3; roslaunch lolo_drivers lolo_core_hardware1.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
+tmux send-keys "sleep 3; mon launch lolo_drivers lolo_core_hardware1.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'Hardware2'
 tmux send-keys "sleep 3; mon launch lolo_drivers lolo_core_hardware2.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
@@ -32,16 +32,13 @@ tmux new-window -n 'tf'
 tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND map_origin_north:=$ORIGIN_OFFSET_NORTH map_origin_east:=$ORIGIN_OFFSET_EAST captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'control'
-tmux send-keys "sleep 5; roslaunch lolo_controllers control.launch" C-m
+tmux send-keys "sleep 5; mon launch lolo_controllers control.launch" C-m
 
 tmux new-window -n 'action'
-tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
+tmux send-keys "sleep 5; mon launch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
 
 tmux new-window -n 'bt'
-tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo" C-m
-
-#tmux new-window -n 'mbes_node'
-#tmux send-keys "sleep 5; roslaunch r2sonic_mbes r2sonic_mbes.launch" C-m
+tmux send-keys "sleep 8; mon launch smarc_bt mission.launch robot_name:=lolo" C-m
 
 #tmux new-window -n 'ptcloud_to_pcd'
 #tmux send-keys "sleep 5; rosrun pcl_ros pointcloud_to_pcd input:=/lolo/mbes_pointcloud _prefix:=/xavier_ssd/LOGS/pcd/"
