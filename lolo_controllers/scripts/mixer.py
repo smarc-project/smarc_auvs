@@ -41,7 +41,7 @@ class control_mixer(object):
         self.rudder_limit = 0.5 # ~30 deg
         self.elevon_limit = 0.5 # ~30 deg
         self.elevator_limit = 0.5 # ~30 deg
-        self.thruster_limit = 800
+        self.thruster_limit = 400
         
         #Outputs
         self.rudder_pub = rospy.Publisher("/lolo/core/rudder_cmd", Float32, queue_size=1)
@@ -83,8 +83,8 @@ class control_mixer(object):
         if self.lastyaw_time is not None and now-self.lastyaw_time < 1:
             yaw_actuation = max(-self.rudder_limit, min(self.rudder_limit, self.yaw_actuation))
             self.rudder_pub.publish(yaw_actuation)
-            thruster_port = self.yaw_gain*yaw_actuation
-            thruster_strb = -self.yaw_gain*yaw_actuation
+            thruster_port = -self.yaw_gain*yaw_actuation
+            thruster_strb = self.yaw_gain*yaw_actuation
 
 
         #pitch

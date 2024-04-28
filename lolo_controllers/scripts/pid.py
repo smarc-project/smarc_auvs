@@ -100,8 +100,8 @@ class PID_wrapper(object):
             output = self.pid.update_error(error)
             self.output_pub.publish(output)
         else:
-            print("setpoint or meassurement timout")
-            #pass
+            #print("setpoint or meassurement timout")
+            pass
 
 
 if __name__ == '__main__':

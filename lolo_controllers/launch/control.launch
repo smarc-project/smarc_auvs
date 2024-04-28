@@ -6,10 +6,10 @@
 
   <!-- Yaw+yawrate controllers-->
   <node name="lolo_yaw_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
-    <param name="p_gain" value="0.5" />
+    <param name="p_gain" value="0.1" />
     <param name="i_gain" value="0" />
     <param name="d_gain" value="0" />
-    <param name="output_limit" value="0.1" />
+    <param name="output_limit" value="0.05" />
     <param name="meassurement_topic" value="/lolo/dr/yaw" />
     <param name="setpoint_topic" value="/lolo/ctrl/yaw_setpoint" />
     <param name="output_topic" value="/lolo/ctrl/yawrate_setpoint" />
