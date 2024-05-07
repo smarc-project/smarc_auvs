@@ -43,7 +43,7 @@
 </node>
 
 <!-- TODO DVL node -->
-<node name="nortek_dvl" type="dvl_node.py" pkg="nortek_dvl_333_driver" args="" output="screen", ns="/lolo/sensors/">
+<node name="nortek_dvl" type="dvl_node.py" pkg="nortek_dvl333_driver" args="" output="screen"/>
 
 <!-- CTD node -->
 <node name="ctd_reader" type="serial_reader.py" pkg="lolo_drivers" args="" output="screen"/>
