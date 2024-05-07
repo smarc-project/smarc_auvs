@@ -12,7 +12,7 @@ def main():
 
     rospy.init_node('serial_reader', anonymous=True)
 
-    pub = rospy.Publisher('/lolo/core/ctd/raw', String, queue_size=400)
+    pub = rospy.Publisher('/lolo/sensors/ctd/raw', String, queue_size=2)
     r = rospy.Rate(10)
     
     while not rospy.is_shutdown():

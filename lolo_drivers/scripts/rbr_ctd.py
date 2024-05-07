@@ -49,7 +49,7 @@ class CTDdecoder():
 
 def main():
     
-    decoder = CTDdecoder('/lolo/core/ctd/raw', "/lolo/core/ctd")
+    decoder = CTDdecoder('/lolo/sensors/ctd/raw', "/lolo/sensors/ctd")
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
