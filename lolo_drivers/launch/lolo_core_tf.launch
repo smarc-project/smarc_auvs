@@ -32,6 +32,6 @@
 <node name="ins_to_dr" type="ins_to_dr.py" pkg="lolo_drivers" output="screen"/>
 
 <!-- TODO change to DVL&FLS&MBES to altitude -->
-<node name="dvl_to_altitude" type="dvl_to_altitude.py" pkg="lolo_drivers" output="screen"/>
+<node name="altitude_node" type="altitude_estimation.py" pkg="lolo_drivers" output="screen"/>
 
 </launch>
