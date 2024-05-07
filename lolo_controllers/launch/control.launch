@@ -52,7 +52,7 @@
     <param name="p_gain" value="0.1" />
     <param name="i_gain" value="0" />
     <param name="d_gain" value="0" />
-    <param name="output_limit" value="0.7" />
+    <param name="output_limit" value="0.4" />
     <param name="meassurement_topic" value="/lolo/dr/depth" />
     <param name="setpoint_topic" value="/lolo/ctrl/depth_setpoint" />
     <param name="output_topic" value="/lolo/ctrl/pitch_setpoint" />
@@ -62,7 +62,7 @@
     <param name="p_gain" value="0.5" />
     <param name="i_gain" value="0.1" />
     <param name="d_gain" value="0" />
-    <param name="output_limit" value="0.1" />
+    <param name="output_limit" value="0.05" />
     <param name="meassurement_topic" value="/lolo/dr/pitch" />
     <param name="setpoint_topic" value="/lolo/ctrl/pitch_setpoint" />
     <param name="output_topic" value="/lolo/ctrl/pitchrate_setpoint" />
@@ -72,7 +72,7 @@
     <param name="p_gain" value="4" />
     <param name="i_gain" value="0" />
     <param name="d_gain" value="0" />
-    <param name="output_limit" value="0.43" />
+    <param name="output_limit" value="0.35" />
     <param name="meassurement_topic" value="/lolo/dr/pitchrate" />
     <param name="setpoint_topic" value="/lolo/ctrl/pitchrate_setpoint" />
     <param name="output_topic" value="/lolo/ctrl/pitch_actuation" />
