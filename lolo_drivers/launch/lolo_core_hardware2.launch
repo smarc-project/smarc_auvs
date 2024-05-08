@@ -16,8 +16,8 @@
 <arg name="LOLO_IP" default="192.168.100" />
 
 <!-- R2sonic MBES node(s) -->
-<include file= "$(find r2sonic_mbes)/launch/r2sonic_mbes.launch" />
-<!-- <include file= "$(find r2sonic_mbes)/launch/r2sonic_bathy.launch" /> -->
+<!-- <include file= "$(find r2sonic_mbes)/launch/r2sonic_mbes.launch" /> -->
+<node pkg="r2sonic_mbes" type="r2sonic_mbes_node.py" name="mbes_interface" output="screen"/>
 
 <arg name="wbms_bathymetry_data_port" default="2210" />
 <arg name="wbms_watercolumn_data_port" default="2211" />

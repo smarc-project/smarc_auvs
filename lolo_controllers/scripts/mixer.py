@@ -36,7 +36,7 @@ class control_mixer(object):
         
         #Vehicle inputs
         self.surge_sub = rospy.Subscriber("/lolo/dr/surge", Float64, self.surge_cb, queue_size=1)
-        self.depth_sub = rospy.Subscriber("/lolo/dr/depth", Float32, self.depth_sub, queue_size=1)
+        self.depth_sub = rospy.Subscriber("/lolo/dr/depth", Float32, self.depth_cb, queue_size=1)
         
         #Output limits
         self.rudder_limit = 0.5 # ~30 deg
@@ -52,6 +52,8 @@ class control_mixer(object):
         self.thruster_strb_pub = rospy.Publisher("/lolo/core/thruster2_cmd", ThrusterRPM, queue_size=1)
         self.elevator_pub = rospy.Publisher("/lolo/core/elevator_cmd", Float32, queue_size=1)
 
+    def depth_cb(self, msg):
+        self.depth = msg.data
     def pitch_cb(self,msg):
         self.pitch_actuation = msg.data
         self.lastpitch_time = rospy.get_time()
@@ -83,7 +85,7 @@ class control_mixer(object):
         #yaw
         if self.lastyaw_time is not None and now-self.lastyaw_time < 1:
             yaw_actuation = max(-self.rudder_limit, min(self.rudder_limit, self.yaw_actuation))
-            self.rudder_pub.publish(yaw_actuation)
+            self.rudder_pub.publish(-yaw_actuation)
             thruster_port = -self.yaw_gain*yaw_actuation
             thruster_strb = self.yaw_gain*yaw_actuation
 
@@ -97,10 +99,10 @@ class control_mixer(object):
 
         #roll
         if self.lastroll_time is not None and now-self.lastroll_time < 1:
-            if(elevon_port is not None): elevon_port += self.roll_actuation
-            else: elevon_port=self.roll_actuation
-            if(elevon_strb is not None): elevon_strb -= self.roll_actuation
-            else: elevon_strb=-self.roll_actuation
+            if(elevon_port is not None): elevon_port = self.roll_actuation
+            else: elevon_port=-self.roll_actuation
+            if(elevon_strb is not None): elevon_strb = self.roll_actuation
+            else: elevon_strb=self.roll_actuation
         if(elevon_port is not None): self.elevon_port_pub.publish(elevon_port) #TODO add limits
         if(elevon_strb is not None): self.elevon_strb_pub.publish(elevon_strb)
 
