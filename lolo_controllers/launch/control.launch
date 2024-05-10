@@ -17,8 +17,8 @@
   </node>
 
   <node name="lolo_yawrate_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
-    <param name="p_gain" value="2" />
-    <param name="i_gain" value="0.5" />
+    <param name="p_gain" value="10" />
+    <param name="i_gain" value="1" />
     <param name="d_gain" value="0" />
     <param name="output_limit" value="0.7" />
     <param name="meassurement_topic" value="/lolo/dr/yawrate" />
@@ -62,14 +62,14 @@
     <param name="p_gain" value="0.5" />
     <param name="i_gain" value="0.1" />
     <param name="d_gain" value="0" />
-    <param name="output_limit" value="0.05" />
+    <param name="output_limit" value="0.1" />
     <param name="meassurement_topic" value="/lolo/dr/pitch" />
     <param name="setpoint_topic" value="/lolo/ctrl/pitch_setpoint" />
     <param name="output_topic" value="/lolo/ctrl/pitchrate_setpoint" />
   </node>
 
   <node name="lolo_pitchrate_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
-    <param name="p_gain" value="4" />
+    <param name="p_gain" value="8" />
     <param name="i_gain" value="0" />
     <param name="d_gain" value="0" />
     <param name="output_limit" value="0.35" />

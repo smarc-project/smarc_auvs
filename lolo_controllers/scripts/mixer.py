@@ -12,7 +12,7 @@ class control_mixer(object):
     def __init__(self):
         #Mixer gain parameters
         self.pitch_gain = 1
-        self.yaw_gain = 1000
+        self.yaw_gain = 500
 
         #Last time an input was received. Used for timeouts
         self.lastyaw_time = 0
@@ -37,12 +37,13 @@ class control_mixer(object):
         #Vehicle inputs
         self.surge_sub = rospy.Subscriber("/lolo/dr/surge", Float64, self.surge_cb, queue_size=1)
         self.depth_sub = rospy.Subscriber("/lolo/dr/depth", Float32, self.depth_cb, queue_size=1)
+        self.depth = 0
         
         #Output limits
         self.rudder_limit = 0.5 # ~30 deg
         self.elevon_limit = 0.5 # ~30 deg
         self.elevator_limit = 0.5 # ~30 deg
-        self.thruster_limit = 400
+        self.thruster_limit = 500
         
         #Outputs
         self.rudder_pub = rospy.Publisher("/lolo/core/rudder_cmd", Float32, queue_size=1)
@@ -123,7 +124,7 @@ class control_mixer(object):
         #Thrusters 2: Add the desired RPM from the rpm setpoint
         if self.rpm_actuation is not None and now - self.lastrpm_time < 1:
             if self.yaw_actuation is not None and self.depth < 1.5:
-                rpm_reduction = max(0, 1 - (abs(self.yaw_actuation) / 0.25))
+                rpm_reduction = max(0, 1 - (abs(self.yaw_actuation) / 0.5))
             else:
                 rpm_reduction = 1
             print("rpm reduction: " + str(rpm_reduction))
