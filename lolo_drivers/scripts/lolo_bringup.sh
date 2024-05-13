@@ -1,12 +1,21 @@
 SESSION=lolo_bringup
 
+#Old askö
+#LATITUDE=58.811480
+#LONGITUDE=17.596177
+#UTM_ZONE=33
+#UTM_BAND=V
+#ORIGIN_OFFSET_NORTH=6521967.47 #Utm coordinates for the LAT/LON in zone 33V
+#ORIGIN_OFFSET_EAST=649947.08 
 
-LATITUDE=58.811480
-LONGITUDE=17.596177
+#New askö
+LATITUDE=58.823969
+LONGITUDE=17.615362
 UTM_ZONE=33
 UTM_BAND=V
-ORIGIN_OFFSET_NORTH=6521967.47 #Utm coordinates for the LAT/LON in zone 33V
-ORIGIN_OFFSET_EAST=649947.08 
+ORIGIN_OFFSET_NORTH=6523400.5 #Utm coordinates for the LAT/LON in zone 33V
+ORIGIN_OFFSET_EAST=651000.5
+
 
 #TODO calculate UTM zone offset based on lat lon origin and utm zone and band
 #<arg name="origin_latitude" default="58.811480"/>
