@@ -100,9 +100,9 @@ class control_mixer(object):
 
         #roll
         if self.lastroll_time is not None and now-self.lastroll_time < 1:
-            if(elevon_port is not None): elevon_port = self.roll_actuation
+            if(elevon_port is not None): elevon_port += self.roll_actuation
             else: elevon_port=-self.roll_actuation
-            if(elevon_strb is not None): elevon_strb = self.roll_actuation
+            if(elevon_strb is not None): elevon_strb += self.roll_actuation
             else: elevon_strb=self.roll_actuation
         if(elevon_port is not None): self.elevon_port_pub.publish(elevon_port) #TODO add limits
         if(elevon_strb is not None): self.elevon_strb_pub.publish(elevon_strb)
@@ -113,20 +113,20 @@ class control_mixer(object):
             if self.vehicle_surge is not None and abs(self.vehicle_surge) < 1:
                 fadeout_scaling = 1 - abs(self.vehicle_surge)
                 fadeout_scaling = max(0, min(1, fadeout_scaling))
-                pass
-        ''' Only underwater
-        if thruster_port is not None:
-            thruster_port *= fadeout_scaling
-        if thruster_strb is not None:
-            thruster_strb *= fadeout_scaling
-        '''
+                
+                if self.depth > 1:
+                    if thruster_port is not None:
+                        thruster_port *= fadeout_scaling
+                    if thruster_strb is not None:
+                        thruster_strb *= fadeout_scaling
 
         #Thrusters 2: Add the desired RPM from the rpm setpoint
         if self.rpm_actuation is not None and now - self.lastrpm_time < 1:
-            if self.yaw_actuation is not None and self.depth < 1.5:
+            if self.yaw_actuation is not None and self.depth < 1:
                 rpm_reduction = max(0, 1 - (abs(self.yaw_actuation) / 0.5))
             else:
                 rpm_reduction = 1
+            
             print("rpm reduction: " + str(rpm_reduction))
             if thruster_port is not None: thruster_port += self.rpm_actuation*rpm_reduction
             else: thruster_port = self.rpm_actuation*rpm_reduction
