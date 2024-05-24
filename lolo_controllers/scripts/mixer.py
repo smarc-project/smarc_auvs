@@ -12,7 +12,7 @@ class control_mixer(object):
     def __init__(self):
         #Mixer gain parameters
         self.pitch_gain = 1
-        self.yaw_gain = 500
+        self.yaw_gain = 1000
 
         #Last time an input was received. Used for timeouts
         self.lastyaw_time = 0
@@ -20,6 +20,7 @@ class control_mixer(object):
         self.lastpitch_time = 0
         self.lastrpm_time = 0
         self.lastsurge_time = 0
+        self.lastdepth_time = 0
 
         #last input values
         self.pitch_actuation = 0
@@ -27,6 +28,7 @@ class control_mixer(object):
         self.yaw_actuation = 0
         self.rpm_actuation = 0
         self.vehicle_surge = 0
+        self.depth = 0
 
         #Control inputs
         self.yaw_sub = rospy.Subscriber("/lolo/ctrl/yaw_actuation", Float64, self.yaw_cb, queue_size=1)
@@ -36,14 +38,13 @@ class control_mixer(object):
         
         #Vehicle inputs
         self.surge_sub = rospy.Subscriber("/lolo/dr/surge", Float64, self.surge_cb, queue_size=1)
-        self.depth_sub = rospy.Subscriber("/lolo/dr/depth", Float32, self.depth_cb, queue_size=1)
-        self.depth = 0
+        self.depth_sub = rospy.Subscriber("/lolo/dr/depth", Float64, self.depth_cb, queue_size=1)
         
         #Output limits
         self.rudder_limit = 0.5 # ~30 deg
         self.elevon_limit = 0.5 # ~30 deg
         self.elevator_limit = 0.5 # ~30 deg
-        self.thruster_limit = 500
+        self.thruster_limit = 1000
         
         #Outputs
         self.rudder_pub = rospy.Publisher("/lolo/core/rudder_cmd", Float32, queue_size=1)
@@ -68,10 +69,14 @@ class control_mixer(object):
         self.rpm_actuation = msg.data
         self.lastrpm_time = rospy.get_time()
     def surge_cb(self,msg):
-        self.surge_actuation = msg.data
+        self.vehicle_surge = msg.data
         self.lastsurge_time = rospy.get_time()
     
     def update(self):
+        #print("---------------------------------------")
+        #print("Speed: " + str(self.vehicle_surge))
+        #print("Depth: " + str(self.depth))
+
         #print("mixer update")
         now = rospy.get_time()
 
@@ -110,24 +115,24 @@ class control_mixer(object):
         #Thrusters 1: scale the values added by the yaw controller based on vehicle speed
         fadeout_scaling = 1
         if self.lastsurge_time is not None and now - self.lastsurge_time < 1:
-            if self.vehicle_surge is not None and abs(self.vehicle_surge) < 1:
-                fadeout_scaling = 1 - abs(self.vehicle_surge)
-                fadeout_scaling = max(0, min(1, fadeout_scaling))
+            fadeout_scaling = 0.5 - abs(self.vehicle_surge)
+            fadeout_scaling = max(0, min(1, fadeout_scaling))
                 
-                if self.depth > 1:
-                    if thruster_port is not None:
-                        thruster_port *= fadeout_scaling
-                    if thruster_strb is not None:
-                        thruster_strb *= fadeout_scaling
+        if self.depth > 0.5:
+            rospy.loginfo_throttle(1,"fadeout scaling applied: " + str(fadeout_scaling))
+            if thruster_port is not None:
+                thruster_port *= fadeout_scaling
+            if thruster_strb is not None:
+                thruster_strb *= fadeout_scaling
 
         #Thrusters 2: Add the desired RPM from the rpm setpoint
         if self.rpm_actuation is not None and now - self.lastrpm_time < 1:
-            if self.yaw_actuation is not None and self.depth < 1:
+            if self.yaw_actuation is not None and self.depth < 0.5:
                 rpm_reduction = max(0, 1 - (abs(self.yaw_actuation) / 0.5))
             else:
                 rpm_reduction = 1
             
-            print("rpm reduction: " + str(rpm_reduction))
+            rospy.loginfo_throttle(1,"rpm reduction: " + str(rpm_reduction))
             if thruster_port is not None: thruster_port += self.rpm_actuation*rpm_reduction
             else: thruster_port = self.rpm_actuation*rpm_reduction
             if thruster_strb is not None: thruster_strb += self.rpm_actuation*rpm_reduction
@@ -137,15 +142,19 @@ class control_mixer(object):
         if thruster_port is not None:
             rpm = max(-self.thruster_limit, min(self.thruster_limit, thruster_port))
             self.thruster_port_pub.publish(int(rpm))
+            #print("thruster port: " + str(rpm))
         if thruster_strb is not None:
             rpm = max(-self.thruster_limit, min(self.thruster_limit, thruster_strb))
             self.thruster_strb_pub.publish(int(rpm))
+            #print("thruster strb: " + str(rpm))
+
             
 
 
 if __name__ == '__main__':
     rospy.init_node("contol_mixer")
     update_rate = float(rospy.get_param("~update_rate", 10))
+    #update_rate = float(rospy.get_param("~update_rate", 2))
     
     mixer =control_mixer()
 
