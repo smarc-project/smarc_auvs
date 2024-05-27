@@ -99,13 +99,13 @@ class control_mixer(object):
         #pitch
         if self.lastpitch_time is not None and now-self.lastpitch_time < 1:
             elevator_actuation = -max(-self.elevator_limit, min(self.elevator_limit, self.pitch_actuation))
-            self.elevator_pub.publish(elevator_actuation)
-            elevon_port = -self.pitch_gain*elevator_actuation
+            self.elevator_pub.publish(elevator_actuation + math.radians(4))
+            elevon_port = self.pitch_gain*elevator_actuation
             elevon_strb = self.pitch_gain*elevator_actuation
 
         #roll
         if self.lastroll_time is not None and now-self.lastroll_time < 1:
-            if(elevon_port is not None): elevon_port += self.roll_actuation
+            if(elevon_port is not None): elevon_port -= self.roll_actuation
             else: elevon_port=-self.roll_actuation
             if(elevon_strb is not None): elevon_strb += self.roll_actuation
             else: elevon_strb=self.roll_actuation
