@@ -34,7 +34,7 @@ class AltitudeEstimation():
                     msg.distBeam3]
         
         for beamRange in beamlist:
-            if beamRange > 1 and beamRange < 400: 
+            if beamRange > 0.3 and beamRange < 400:
                 beam_sum+=beamRange
                 valid_beams+=1
 
