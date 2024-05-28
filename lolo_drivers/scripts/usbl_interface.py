@@ -11,6 +11,11 @@ from lolo_msgs.msg import UsblTopsideCorrection
 DROP_MSG = "+++ATZ4\r\n"
 SET_PWR_LOW = "+++AT!L3\r\n"
 
+# Device address for the local (Lolo) acoustic modem.
+LOCAL_ADDRESS = 1
+# Device address for the remote (topside) acoustic modem.
+REMOTE_ADDRESS = 2
+
 class UsblInterface:
 
     def __init__(self):
@@ -90,6 +95,39 @@ class UsblInterface:
         else:
             self.usbl_in_air = True
 
+    def configure_modem(self):
+        """
+        Configure the communication modem to comply with the necessary
+        settings for burst message communication (has to be the same as
+        the topside unit).
+        """
+        # Set the transmission level to the lowest to be safe.
+        self.send_for_transmission("+++AT!L3", is_command=True)
+        rospy.sleep(1.0)
+
+        # Set the receiving gain to normal.
+        self.send_for_transmission("+++AT!G0", is_command=True)
+        rospy.sleep(1.0)
+
+        # Set the local and remote device addresses for lolo (1) and the topside (2).
+        self.send_for_transmission("+++AT!AL1", is_command=True)
+        rospy.sleep(1.0)
+        self.send_for_transmission("+++AT!AR2", is_command=True)
+        rospy.sleep(1.0)
+
+        # Set the packet transmission and reception time. (FIXME) setting it to max (1200ms).
+        self.send_for_transmission("+++AT!ZP1200", is_command=True)
+        rospy.sleep(1.0)
+
+        # Set the carrier waveform ID to 0.
+        self.send_for_transmission("+++AT!C0", is_command=True)
+        rospy.sleep(1.0)
+
+        # Set the highest address to 14. (TODO) Why 14?
+        self.send_for_transmission("+++AT!AM14", is_command=True)
+        rospy.sleep(1.0)
+
+
     def usbl_menu(self, command):
         """
         Use the input command to do something useful.
@@ -118,20 +156,20 @@ class UsblInterface:
         msg = "POS " + str(self.cur_lat) + " " + str(self.cur_lon) + " " + str(self.cur_depth)
         rospy.loginfo("(UsblInterface) Relaying position to topside: {0}".format(msg))
 
-        self.transmit_to_topside(msg)
+        self.send_for_transmission(msg)
 
-    def transmit_to_topside(self, msg):
+    def send_for_transmission(self, msg, is_command=False):
         """
         Send the input msg to the topside unit. Checks if lolo is at the
         surface before transmitting anything.
         """
         # Do not transmit if lolo is at the surface.
-        if self.usbl_in_air:
+        if self.usbl_in_air and not is_command:
             rospy.logwarn("(UsblInterface) USBL in air! Won't transmit to topside!")
             return
 
-        # Append a newline at the end of the msg.
-        msg += "\n"
+        # Append a carriage return at the end of the msg.
+        msg += "\r"
         for c in msg:
             self.transmit_pub.publish(Char(ord(c)))
 
