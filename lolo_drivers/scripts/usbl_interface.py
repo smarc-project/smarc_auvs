@@ -54,6 +54,8 @@ class UsblInterface:
                                          "/lolo/dr/depth"),
                          Float64, self.depth_callback)
 
+        self.configure_modem()
+
     def usbl_callback(self, msg):
         """
         Incrementally build the inbound command until a newline appears.
@@ -103,28 +105,35 @@ class UsblInterface:
         """
         # Set the transmission level to the lowest to be safe.
         self.send_for_transmission("+++AT!L3", is_command=True)
+        rospy.loginfo("(UsblInterface) Configuring transmission to lowest power.")
         rospy.sleep(1.0)
 
         # Set the receiving gain to normal.
         self.send_for_transmission("+++AT!G0", is_command=True)
+        rospy.loginfo("(UsblInterface) Setting reciever gain to normal.")
         rospy.sleep(1.0)
 
         # Set the local and remote device addresses for lolo (1) and the topside (2).
         self.send_for_transmission("+++AT!AL1", is_command=True)
+        rospy.loginfo("(UsblInterface) Setting local address to 1.")
         rospy.sleep(1.0)
         self.send_for_transmission("+++AT!AR2", is_command=True)
+        rospy.loginfo("(UsblInterface) Setting remote address to 2.")
         rospy.sleep(1.0)
 
         # Set the packet transmission and reception time. (FIXME) setting it to max (1200ms).
         self.send_for_transmission("+++AT!ZP1200", is_command=True)
+        rospy.loginfo("(UsblInterface) Setting max packet transmission time to MAX (1200ms).")
         rospy.sleep(1.0)
 
         # Set the carrier waveform ID to 0.
         self.send_for_transmission("+++AT!C0", is_command=True)
+        rospy.loginfo("(UsblInterface) Setting waveform ID to 0.")
         rospy.sleep(1.0)
 
         # Set the highest address to 14. (TODO) Why 14?
         self.send_for_transmission("+++AT!AM14", is_command=True)
+        rospy.loginfo("(UsblInterface) Setting highest address comms to 14.")
         rospy.sleep(1.0)
 
 
