@@ -17,7 +17,7 @@
   </node>
 
   <node name="lolo_yawrate_pid" pkg="lolo_controllers" type="pid.py" output="screen" ns = "/lolo/ctrl" >
-    <param name="p_gain" value="10" />
+    <param name="p_gain" value="40" />
     <param name="i_gain" value="0" />
     <param name="d_gain" value="0" />
     <param name="output_limit" value="0.7" />

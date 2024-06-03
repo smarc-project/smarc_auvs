@@ -38,7 +38,7 @@ tmux new-window -n 'Hardware2'
 tmux send-keys "sleep 3; mon launch lolo_drivers lolo_core_hardware2.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'tf'
-tmux send-keys "sleep 5; roslaunch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND map_origin_north:=$ORIGIN_OFFSET_NORTH map_origin_east:=$ORIGIN_OFFSET_EAST captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
+tmux send-keys "sleep 5; mon launch lolo_drivers lolo_core_tf.launch utm_zone:=$UTM_ZONE utm_band:=$UTM_BAND map_origin_north:=$ORIGIN_OFFSET_NORTH map_origin_east:=$ORIGIN_OFFSET_EAST captain_ip:=$CAPTAIN_IP LOLO_IP:=$LOLO_IP" C-m
 
 tmux new-window -n 'control'
 tmux send-keys "sleep 5; mon launch lolo_controllers control.launch" C-m

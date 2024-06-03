@@ -8,8 +8,13 @@ from geographic_msgs.msg import GeoPoint
 from lolo_msgs.msg import UsblTopsideCorrection
 
 # Useful USBL AT commands.
-DROP_MSG = "+++ATZ4\r\n"
-SET_PWR_LOW = "+++AT!L3\r\n"
+DROP_MSG = "+++ATZ4\r"
+SET_PWR_LOW = "+++AT!L3\r"
+
+# Device address for the local (Lolo) acoustic modem.
+LOCAL_ADDRESS = 1
+# Device address for the remote (topside) acoustic modem.
+REMOTE_ADDRESS = 2
 
 class UsblInterface:
 
@@ -28,7 +33,7 @@ class UsblInterface:
         # Publisher for the transmit message.
         self.transmit_pub = rospy.Publisher(rospy.get_param("/usbl_transmit_topic",
                                                             "/lolo/core/usbl/transmit"),
-                                            Char, queue_size=10)
+                                            Char, queue_size=100)
         # Publisher for the abort message.
         self.abort_pub = rospy.Publisher(rospy.get_param("/abort_topic",
                                                         '/lolo/core/abort'),
@@ -48,6 +53,8 @@ class UsblInterface:
         rospy.Subscriber(rospy.get_param("/lolo_depth_topic",
                                          "/lolo/dr/depth"),
                          Float64, self.depth_callback)
+
+        #self.configure_modem()
 
     def usbl_callback(self, msg):
         """
@@ -90,6 +97,18 @@ class UsblInterface:
         else:
             self.usbl_in_air = True
 
+    def configure_modem(self):
+        """
+        Configure the communication modem to comply with the necessary
+        settings for burst message communication (has to be the same as
+        the topside unit).
+        """
+        # Set the transmission level to the lowest to be safe.
+        self.send_for_transmission("+++AT&F", is_command=True)
+        rospy.loginfo("(UsblInterface) Configuring transmission to lowest power.")
+        rospy.sleep(1.0)
+
+
     def usbl_menu(self, command):
         """
         Use the input command to do something useful.
@@ -115,24 +134,29 @@ class UsblInterface:
         """
         Relay the most recent position of LoLo in lat/lon [deg] and depth [m].
         """
+
+        #rospy.sleep(10)
         msg = "POS " + str(self.cur_lat) + " " + str(self.cur_lon) + " " + str(self.cur_depth)
         rospy.loginfo("(UsblInterface) Relaying position to topside: {0}".format(msg))
 
-        self.transmit_to_topside(msg)
+        self.send_for_transmission(msg)
 
-    def transmit_to_topside(self, msg):
+    def send_for_transmission(self, msg, is_command=False):
         """
         Send the input msg to the topside unit. Checks if lolo is at the
         surface before transmitting anything.
         """
         # Do not transmit if lolo is at the surface.
-        if self.usbl_in_air:
+        if self.usbl_in_air and not is_command:
             rospy.logwarn("(UsblInterface) USBL in air! Won't transmit to topside!")
             return
 
-        # Append a newline at the end of the msg.
-        msg += "\n"
+        # Append a carriage return at the end of the msg.
+        msg += "\r"
+        msg += '\n'
         for c in msg:
+            #print(c)
+            #rospy.sleep(0.015)
             self.transmit_pub.publish(Char(ord(c)))
 
     def drop_message(self):
