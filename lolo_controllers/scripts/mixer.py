@@ -12,7 +12,10 @@ class control_mixer(object):
     def __init__(self):
         #Mixer gain parameters
         self.pitch_gain = 1
-        self.yaw_gain = 750
+        self.yaw_gain = 375 #~+-300RPM
+        self.rpm_deadband = 150
+        self.yaw_actuation_filtered = 0
+        self.yaw_actuation_filter_setting = 1.0/60.0
 
         #Last time an input was received. Used for timeouts
         self.lastyaw_time = 0
@@ -92,8 +95,9 @@ class control_mixer(object):
         if self.lastyaw_time is not None and now-self.lastyaw_time < 1:
             yaw_actuation = max(-self.rudder_limit, min(self.rudder_limit, self.yaw_actuation))
             self.rudder_pub.publish(-yaw_actuation)
-            thruster_port = -self.yaw_gain*yaw_actuation
-            thruster_strb = self.yaw_gain*yaw_actuation
+            self.yaw_actuation_filtered = (1.0-self.yaw_actuation_filter_setting)*self.yaw_actuation_filtered + self.yaw_actuation_filter_setting*yaw_actuation
+            thruster_port = -self.yaw_gain*self.yaw_actuation_filtered
+            thruster_strb = self.yaw_gain*self.yaw_actuation_filtered
 
 
         #pitch
@@ -128,7 +132,7 @@ class control_mixer(object):
         #Thrusters 2: Add the desired RPM from the rpm setpoint
         if self.rpm_actuation is not None and now - self.lastrpm_time < 1:
             if self.yaw_actuation is not None and self.depth < 0.5:
-                rpm_reduction = max(0, 1 - (abs(self.yaw_actuation)))
+                rpm_reduction = max(0, 1 - (abs(self.yaw_actuation_filtered)))
             else:
                 rpm_reduction = 1
             
@@ -141,10 +145,14 @@ class control_mixer(object):
         #Publish thruster setpoints
         if thruster_port is not None:
             rpm = max(-self.thruster_limit, min(self.thruster_limit, thruster_port))
+            if(abs(rpm) < self.rpm_deadband):
+                rpm = self.rpm_deadband if rpm > 0 else -self.rpm_deadband
             self.thruster_port_pub.publish(int(rpm))
             #print("thruster port: " + str(rpm))
         if thruster_strb is not None:
             rpm = max(-self.thruster_limit, min(self.thruster_limit, thruster_strb))
+            if(abs(rpm) < self.rpm_deadband):
+                rpm = self.rpm_deadband if rpm > 0 else -self.rpm_deadband
             self.thruster_strb_pub.publish(int(rpm))
             #print("thruster strb: " + str(rpm))
 
