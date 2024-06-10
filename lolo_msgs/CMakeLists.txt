@@ -27,7 +27,7 @@ add_message_files(
   Temperatures.msg
   RBR_ctd.msg
   UsblTopsideCorrection.msg
-  CustomAcousticCommand.msg
+  CustomCommand.msg
 )
 
 ## Generate added messages and services with any dependencies listed here

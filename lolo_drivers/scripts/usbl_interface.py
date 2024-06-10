@@ -6,7 +6,11 @@ from std_msgs.msg import Empty
 from std_msgs.msg import Float64
 from geographic_msgs.msg import GeoPoint
 from lolo_msgs.msg import UsblTopsideCorrection
-from lolo_msgs.msg import CustomAcousticCommand
+from lolo_msgs.msg import CustomCommand
+from geometry_msgs.msg import PoseStamped
+
+# For UTC time.
+import time
 
 # Useful USBL AT commands.
 DROP_MSG = "+++ATZ4\r\n"
@@ -23,6 +27,9 @@ NEWLINE = 10
 # FIXME: I'm assuming the maximum lenght of a command sent by the topside is of 6.
 CMD_MAX_LEN = 7 # 6 + newline = 7.
 
+# In air depth threshold in [m]
+IN_AIR_DEPTH = 1.0
+
 class UsblInterface:
 
     def __init__(self):
@@ -31,12 +38,13 @@ class UsblInterface:
 
         # Important flags.
         self.usbl_in_air = True # Will assume it's always starting on air.
-        self.incoming_correction = False
-        self.incoming_custom_cmd = False
 
         self.cur_lat = None
         self.cur_lon = None
         self.cur_depth = None
+
+        self.topside_frame_id = rospy.get_param("/usbl_topside_frame",
+                                                "/usbl_topside_enu")
 
         # Publisher for the transmit message.
         self.transmit_pub = rospy.Publisher(rospy.get_param("/usbl_transmit_topic",
@@ -49,11 +57,15 @@ class UsblInterface:
         # Publisher for the USBL correction sent by the topside unit.
         self.usbl_correction_pub = rospy.Publisher(rospy.get_param("/usbl_correction_topic",
                                                                    "/lolo/core/usbl/correction"),
-                                                   UsblTopsideCorrection, queue_size=1)
+                                                   UsblTopsideCorrection, queue_size=10)
         # Publisher for a custom command from the topside unit.
         self.custom_cmd_pub = rospy.Publisher(rospy.get_param("/custom_command_topic",
                                                               "/lolo/core/usbl/custom_cmd"),
-                                              CustomAcousticCommand, queue_size=1)
+                                              CustomCommand, queue_size=10)
+        # Publisher for the measured relative position from the topside unit.
+        self.usbl_relative_pub = rospy.Publisher(rospy.get_param("/usbl_relative_topic",
+                                                                 "/lolo/core/usbl/relative_pos"),
+                                                 PoseStamped, queue_size=10)
 
         # ------ STATUS SUBSCRIBERS ----------
         # TODO: Subscribe to a bunch (or a custom) status topics that include relevant
@@ -82,16 +94,10 @@ class UsblInterface:
         # If we get a newline, we assume we've got the whole command.
         if self.command[-1] == chr(NEWLINE):
 
-            # If we were waiting for a correction, publish it.
-            if self.incoming_correction:
-                self.publish_usbl_correction(self.command)
-            elif self.incoming_custom_cmd:
-                self.publish_custom_cmd(self.command)
-            else:
-                rospy.loginfo("(UsblInterface) Got command {0} from topside modem.".format(self.command))
-                success = self.usbl_menu(self.command[:-1])
-                if not success:
-                    rospy.logwarn("(UsblInterface) Did not understand command {0}.".format(self.command))
+            rospy.loginfo("(UsblInterface) Got command {0} from topside modem.".format(self.command))
+            success = self.usbl_menu(self.command[:-1])
+            if not success:
+                rospy.logwarn("(UsblInterface) Did not understand command {0}.".format(self.command))
             # Reset the command buffer.
             self.command = ""
 
@@ -111,7 +117,7 @@ class UsblInterface:
         self.cur_depth = round(msg.data,6)
 
         # Trigger usbl_in_air flag if lolo is at the surface.
-        if self.cur_depth >= 1.0:
+        if self.cur_depth >= IN_AIR_DEPTH:
             self.usbl_in_air = False
         else:
             self.usbl_in_air = True
@@ -147,11 +153,17 @@ class UsblInterface:
         rospy.loginfo("(UsblInterface) Setting max packet transmission time to MAX (1200ms).")
         rospy.sleep(1.0)
 
-    def usbl_menu(self, command):
+    def usbl_menu(self, msg):
         """
         Use the input command to do something useful.
         You can edit this function to include more features.
+
+        msg:
+            type: string
+            format: "CMD x x x x ..."
         """
+        arg_list = [m for m in msg.split(" ")]
+        command = arg_list[0]
 
         if command.lower() == 'abort':
             rospy.logwarn("(UsblInterface) ABORT ABORT ABORT!!")
@@ -165,13 +177,18 @@ class UsblInterface:
             rospy.loginfo("(UsblInterface) Status requested by topside, sending...")
             self.relay_status()
             success = True
-        elif command.lower() == 'usbl':
+        elif command.lower() == 'cor':
             rospy.loginfo("(UsblInterface) Receiving USBL correction...")
-            self.incoming_correction = True
+            self.publish_usbl_correction(msg)
             success = True
         elif command.lower() == 'runcmd':
             rospy.loginfo("(UsblInterface) Getting custom command from topside...")
-            self.incoming_custom_cmd = True
+            self.publish_custom_cmd(msg)
+            success = True
+        elif command.lower() == 'rel':
+            rospy.loginfo("(UsblInterface) Receiving a relative position from topside...")
+            self.publish_relative_position(msg)
+            success = True
         else:
             success = False
 
@@ -202,53 +219,65 @@ class UsblInterface:
 
         msg:
             type: string
-            format: "usbl_lat usbl_lon usbl_range stamp"
+            format: "COR usbl_lat usbl_lon usbl_range stamp"
         """
         # Split string by the whitespace between each variable.
-        lat, lon, meas_range, stamp = [float(n) for n in msg.split(" ")]
+        cmd, lat, lon, meas_range, stamp = [m for m in msg.split(" ")]
 
         # Build message and publish.
         usbl_correction = UsblTopsideCorrection()
-        usbl_correction.lat = lat
-        usbl_correction.lon = lon
-        usbl_correction.range = meas_range
-        usbl_correction.stamp = stamp
+        usbl_correction.lat = float(lat)
+        usbl_correction.lon = float(lon)
+        usbl_correction.range = float(meas_range)
+        usbl_correction.stamp = float(stamp)
         self.usbl_correction_pub.publish(usbl_correction)
-
-        # Reset flag.
-        self.incoming_correction = False
 
     def publish_custom_cmd(self, msg):
         """
-        Publish the custom commands as a CustomAcousticCommand msg
+        Publish the custom commands as a CustomCommand msg
         for other nodes to do something with it.
 
         msg:
             type: string
-            format: "cmd sent_stamp arg1 arg2 ... arg5 checksum"
+            format: "cmd customcmd sent_stamp checksum"
         """
-
-        command = []
         # Split string by the whitespace between each variable.
-        [command.append(m) for m in msg.split(" ")]
+        command = [m for m in msg.split(" ")]
 
-        # FIXME: how do we do the checksum?
-        # if command[-1] != checksum: return.
+        # Checksum will be the sum of the bytes in the msg without the checksum.
+        checksum = 1221;
+        if command[-1] != checksum:
+            rospy.logerr("(UsblInterface) Custom cmd checksum failed! Ignoring.")
+            return
 
-        acc_msg = CustomAcousticCommand()
-        acc_msg.cmd = command[0]
-        acc_msg.sent_stamp = float(command[1])
-        acc_msg.recv_stamp = rospy.Time.now().to_sec()
-        acc_msg.arg1 = command[2]
-        acc_msg.arg2 = command[3]
-        acc_msg.arg3 = command[4]
-        acc_msg.arg4 = command[5]
-        acc_msg.arg5 = command[6]
+        custom_msg = CustomCommand()
+        custom_msg.cmd = command[1]
+        custom_msg.sent_stamp = int(command[2])
+        # Stamp it with UTC time in [s].
+        custom_msg.recv_stamp = int(time.time())
 
-        self.custom_cmd_pub.publish(acc_msg)
+        self.custom_cmd_pub.publish(custom_msg)
 
-        # Reset flag.
-        self.incoming_custom_cmd = False
+    def publish_relative_position(self, msg):
+        """
+        Publish the relayed relative position of Lolo with respect to the
+        topside unit, in ENU convention.
+
+        msg:
+            type: string
+            format: "REL East North Up stamp"
+        """
+        # Split string by the whitespace between each variable.
+        cmd, east, north, up, stamp = [m for m in msg.split(" ")]
+
+        pos_msg = PoseStamped()
+        # TODO: will the fact that the stamp is in the past affect ros in a way?
+        pos_msg.header.stamp = rospy.Duration(float(stamp))
+        pos_msg.header.frame_id = self.topside_frame_id
+        pos_msg.pose.position.x = float(east)
+        pos_msg.pose.position.y = float(north)
+        pos_msg.pose.position.z = float(up)
+        self.usbl_relative_pub.publish(pos_msg)
 
     def send_for_transmission(self, msg, is_command=False):
         """
