@@ -29,11 +29,14 @@ REMOTE_ADDRESS = 1
 # Newline in ASCII.
 NEWLINE = 10
 
-# FIXME: I'm assuming the maximum lenght of a command sent by the topside is of 6.
-CMD_MAX_LEN = 7 # 6 + newline = 7.
+# TODO: Max length for the command buffer, assuming 1000 chars is too long.
+CMD_MAX_LEN = 500
 
 # In air depth threshold in [m]
 IN_AIR_DEPTH = 1.0
+
+# Length of the checksum.
+CHECKSUM_LEN = 3
 
 class UsblInterface:
 
@@ -65,7 +68,7 @@ class UsblInterface:
                                                    UsblTopsideCorrection, queue_size=10)
         # Publisher for a custom command from the topside unit.
         self.custom_cmd_pub = rospy.Publisher(rospy.get_param("/custom_command_topic",
-                                                              "/lolo/core/usbl/custom_cmd"),
+                                                              "/lolo/custom_cmd"),
                                               CustomCommand, queue_size=10)
         # Publisher for the measured relative position from the topside unit.
         self.usbl_relative_pub = rospy.Publisher(rospy.get_param("/usbl_relative_topic",
@@ -106,7 +109,9 @@ class UsblInterface:
             # Reset the command buffer.
             self.command = ""
 
-        # elif check for CMD_MAX_LEN?
+        if len(self.command) > CMD_MAX_LEN:
+            rospy.logwarn("(UsblInterface) Newline hasn't been received, dropping buffer.")
+            self.command = ""
 
     def position_callback(self, msg):
         """
@@ -230,7 +235,12 @@ class UsblInterface:
             format: "COR usbl_lat usbl_lon usbl_range stamp"
         """
         # Split string by the whitespace between each variable.
-        cmd, lat, lon, meas_range, stamp = [m for m in msg.split(" ")]
+        try:
+            cmd, lat, lon, meas_range, stamp = [m for m in msg.split(" ")]
+        except:
+            rospy.logerr("(UsblInterface) Too many values to unpack, message is wrong.")
+            self.command = ""
+            return
 
         # Build message and publish.
         usbl_correction = UsblTopsideCorrection()
@@ -253,9 +263,11 @@ class UsblInterface:
         command = [m for m in msg.split(" ")]
 
         # Checksum will be the sum of the bytes in the msg without the checksum.
-        checksum = 1221;
+        bytelist = [ord(c) for c in msg[:-CHECKSUM_LEN]]
+        checksum = hex(sum(bytearray(bytelist)) % 256)[2:]
         if command[-1] != checksum:
             rospy.logerr("(UsblInterface) Custom cmd checksum failed! Ignoring.")
+            rospy.logerr("(UsblInterface) Expected {0} and got {1}.".format(command[-1], checksum))
             return
 
         custom_msg = CustomCommand()
@@ -276,7 +288,12 @@ class UsblInterface:
             format: "REL East North Up stamp"
         """
         # Split string by the whitespace between each variable.
-        cmd, east, north, up, stamp = [m for m in msg.split(" ")]
+        try:
+            cmd, east, north, up, stamp = [m for m in msg.split(" ")]
+        except:
+            rospy.logerr("(UsblInterface) Too many values to unpack, message is wrong.")
+            self.command = ""
+            return
 
         pos_msg = PoseStamped()
         # TODO: will the fact that the stamp is in the past affect ros in a way?
