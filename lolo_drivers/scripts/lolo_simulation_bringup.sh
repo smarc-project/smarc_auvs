@@ -103,8 +103,8 @@ tmux send-keys "sleep 5; roslaunch lolo_controllers control.launch" C-m
 tmux new-window -n 'action'
 tmux send-keys "sleep 5; roslaunch lolo_action_servers lolo_actions.launch robot_name:=lolo" C-m
 
-#tmux new-window -n 'bt'
-#tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo"
+tmux new-window -n 'bt'
+tmux send-keys "sleep 8; roslaunch smarc_bt mission.launch robot_name:=lolo"
 
 #tmux new-window -n 'mbes_node'
 #tmux send-keys "sleep 5; roslaunch r2sonic_mbes r2sonic_mbes.launch" C-m

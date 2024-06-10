@@ -13,8 +13,13 @@ from geometry_msgs.msg import PoseStamped
 import time
 
 # Useful USBL AT commands.
-DROP_MSG = "+++ATZ4\r\n"
-SET_PWR_LOW = "+++AT!L3\r\n"
+DROP_MSG = "+++ATZ4\r"
+SET_PWR_LOW = "+++AT!L3\r"
+
+# Device address for the local (Lolo) acoustic modem.
+LOCAL_ADDRESS = 1
+# Device address for the remote (topside) acoustic modem.
+REMOTE_ADDRESS = 2
 
 # Device address for the local (Lolo) acoustic modem.
 LOCAL_ADDRESS = 2
@@ -154,6 +159,7 @@ class UsblInterface:
         rospy.sleep(1.0)
 
     def usbl_menu(self, msg):
+
         """
         Use the input command to do something useful.
         You can edit this function to include more features.
@@ -207,6 +213,8 @@ class UsblInterface:
         """
         Relay the most recent position of LoLo in lat/lon [deg] and depth [m].
         """
+
+        #rospy.sleep(10)
         msg = "POS " + str(self.cur_lat) + " " + str(self.cur_lon) + " " + str(self.cur_depth)
         rospy.loginfo("(UsblInterface) Relaying position to topside: {0}".format(msg))
 
@@ -292,6 +300,8 @@ class UsblInterface:
         # Append a carriage return at the end of the msg.
         msg += "\r"
         for c in msg:
+            #print(c)
+            #rospy.sleep(0.015)
             self.transmit_pub.publish(Char(ord(c)))
 
     def drop_message(self):
